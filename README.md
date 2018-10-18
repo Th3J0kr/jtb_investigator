@@ -5,10 +5,15 @@
 
 ###### This tool was born out of the unhappy marriage of terrible telemetry and tooling built into BitSight and my general laziness when it comes to doing a lot of look ups on Domain Names and IP addresses.
 
+------
+
 JTB (Just the basics) Investigator is a simple framework to ease the monotonous looks up many of us do every day. When you get an alert and need to track down an IP or Domain Name or just in general investigation, we often do the same basic look ups (NSLookup, Nmap, whois, etc.) over and over. Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
 
 Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
 Version: 0.1
+
+------
+
 ## Installation
 
 The setup is very simple:
@@ -34,13 +39,13 @@ Once running just follow the prompts!
 
 ## General Guidance
 
-#### Starting an investigation
+### Starting an investigation
 
 After the super sweet ASCII art, you will be prompted to either start an investigation (1) or quit (99). This menu will be have more options in the future such as import an investigation but it's just simple right now.
 
 Hit 1 and you will be asked for an IP or Domain Name. You will not be able to proceed until you provide one or the other to prevent issues down the line.
 
-#### Investigating
+### Investigating
 
 Once you have started your investigation of an IP or Domain Name you will be presented with a menu of options:
 
@@ -59,17 +64,26 @@ Choose an option:
 >
 ```
 
-##### Menu Options
+### Menu Options
 
 `0`: Display help information (not added yet)
+
 `1`: Print info about the host (IP and Domain)
+
 `2`: Print all the information gathered so far.
+
 `3`: Get either the IP or the Domain Name depending which you have already provided
+
 `4`: Get open ports on target host (Only scans 22-443 right now)
+
 `5`: Do a whois lookup and store import information to investigation report
+
 `96`: Save the investigation to a file in `./reports/<hostname or ip>_report.txt`
+
 `97`: Change IP of target
+
 `98`: Change Domain Name of target
+
 `99`: Go back to main menu. Destroys current investigation
 
 ## To Do:
