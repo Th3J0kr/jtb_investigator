@@ -58,6 +58,7 @@ Choose an option:
 3: Lookup missing info
 4: Nmap it
 5: Get whois info
+6: Auto Investigate
 96: Export Investigation
 97: Change IP
 98: Change Domain Name
