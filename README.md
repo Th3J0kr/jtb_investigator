@@ -42,11 +42,17 @@ Once running just follow the prompts!
 
 ### Command line usage
 
+#### Auto Investigate via CLI
+
 Using the command line makes the lookups even faster. After I added this feature I realized there isn't much point of the menu driven part but ASCII art is fun so...
 
 Anyway it's easy to automate it all with: `./jtb.py -i <ip to investigate>` or `python3 jtb.py -n <hostname to investigate>`
 
 This will spit the report into the `reports/` directory in `<hostname or ip>_report.txt`.
+
+#### Import via CLI
+
+Run `./jtb.py -r <filepath to report>` to import a report and drop back into the investigation session
 
 ## General Guidance
 
@@ -55,6 +61,8 @@ This will spit the report into the `reports/` directory in `<hostname or ip>_rep
 After the super sweet ASCII art, you will be prompted to either start an investigation (1) or quit (99). This menu will be have more options in the future such as import an investigation but it's just simple right now.
 
 Hit 1 and you will be asked for an IP or Domain Name. You will not be able to proceed until you provide one or the other to prevent issues down the line.
+
+Hit 2 and you will be asked if you want to import a report you have previously started. Reports are currently all just .txt files. Import and Export to json/csv incoming soon
 
 ### Investigating
 
@@ -108,7 +116,7 @@ It is written to be easily extended. All the options are classes in the `modules
 
 ### General improvements
 
-1. Add import investigation
+1. ~~Add import investigation~~
 2. ~~Add help in menu~~
 3. Stability improvements
 
@@ -117,7 +125,9 @@ It is written to be easily extended. All the options are classes in the `modules
 1. Add multi-host capability
 2. Add more investigation modules
 3. Add different export formats
-4. Clean up auto-investigate
+    *JSON
+    *CSV
+4. ~~Clean up auto-investigate~~
 5. ~~Add command line options to expedite startup~~
 
 
