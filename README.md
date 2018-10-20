@@ -79,6 +79,8 @@ Choose an option:
 
 `5`: Do a whois lookup and store import information to investigation report
 
+`6`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
+
 `96`: Save the investigation to a file in `./reports/<hostname or ip>_report.txt`
 
 `97`: Change IP of target

@@ -44,9 +44,10 @@ class Investigate:
 
     def openInvestigation(self):
         valid = False
+        print('Opening investigation')
 
         while not valid:
-            print('Opening investigation')
+            print()
             print('What do you know about the host?')
             print('1: IP address')
             print('2: Domain Name')
@@ -54,11 +55,13 @@ class Investigate:
             cmd = input('> ')
 
             if cmd == '1':
-                valid = True
                 self.host.changeIP()
+                if self.host.ip:
+                    valid = True
             elif cmd == '2':
-                valid = True
                 self.host.changeDomain()
+                if self.host.domainName:
+                    valid = True
 
             else:
                 print('Choose a valid option!')
@@ -79,6 +82,29 @@ class Investigate:
         print('97: Change IP')
         print('98: Change Domain Name')
         print('99: Back to main menu (destroys current investigation)')
+
+    def showHelp(self):
+        print("""
+------
+JTB (Just the basics) Investigator is a simple framework to ease the monotonous looks up many of us do every day. When you get an alert and need to track down an IP or Domain Name or just in general investigation, we often do the same basic look ups (NSLookup, Nmap, whois, etc.) over and over. Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
+
+Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
+Version: 0.1
+------
+##Usage##
+
+`0`: Display help information (not added yet)
+`1`: Print info about the host (IP and Domain)
+`2`: Print all the information gathered so far.
+`3`: Get either the IP or the Domain Name depending which you have already provided
+`4`: Get open ports on target host (Only scans 22-443 right now)
+`5`: Do a whois lookup and store import information to investigation report
+`6`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
+`96`: Save the investigation to a file in `./reports/<hostname or ip>_report.txt`
+`97`: Change IP of target
+`98`: Change Domain Name of target
+`99`: Go back to main menu. Destroys current investigation
+        """)
 
     def autoSherlock(self):
         print()
@@ -173,13 +199,16 @@ class Host:
         self.whoisInfo = {}
 
     def changeIP(self):
-        print('Please enter IP address of host: ')
-        ip = input('(e.g. 10.80.1.1) > ')
-        self.ip = ip
+        
+        while not self.ip:
+            print('Please enter IP address of host: ')
+            ip = input('(e.g. 10.80.1.1) > ')
+            self.ip = ip
         print('Assigned host ip of {}'.format(self.ip))
 
     def changeDomain(self):
-        print('Please enter Domain Name of host: ')
-        domainName = input('(e.g. google.com) > ')    
-        self.domainName = domainName
+        while not self.domainName:
+            print('Please enter Domain Name of host: ')
+            domainName = input('(e.g. google.com) > ')    
+            self.domainName = domainName
         print('Assigned host domain name of {}'.format(self.domainName))
