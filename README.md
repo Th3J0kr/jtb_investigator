@@ -104,8 +104,7 @@ It is written to be easily extended. All the options are classes in the `modules
 1. Add multi-host capability
 2. Add more investigation modules
 3. Add different export formats
-4. Add auto-investigate
-   * To automatically get all information after providing domain name/ip
+4. Clean up auto-investigate
 5. Add command line options to expedite startup
 
 

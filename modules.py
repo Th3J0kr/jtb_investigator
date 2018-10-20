@@ -4,28 +4,28 @@ import nmap
 import whois
 
 class Lookup:
-    def __init__(self, host):
-        self.host = host
+    def __init__(self):
+        pass
 
     def doLookup(self, host):
-        if not self.host.ip:
-            print('Looking up ip from domain {}'.format(self.host.domainName))
+        if not host.ip:
+            print('Looking up ip from domain {}'.format(host.domainName))
             try:
-                ip = socket.gethostbyname(self.host.domainName)
+                ip = socket.gethostbyname(host.domainName)
                 if ip:
-                    self.host.ip = ip
-                    return self.host
+                    host.ip = ip
+                    return host
                 else:
                     print('Couldn\'t get IP')
             except socket.gaierror:
                 print('Couldn\'t look up that host')
 
-        elif not self.host.domainName:
-            print('Looking up domain name from ip {}'.format(self.host.ip))
-            domainName = socket.gethostbyaddr(self.host.ip)
+        elif not host.domainName:
+            print('Looking up domain name from ip {}'.format(host.ip))
+            domainName = socket.gethostbyaddr(host.ip)
             if domainName:
-                self.host.domainName = domainName[0]
-                return self.host
+                host.domainName = domainName[0]
+                return host
             else:
                 print('Couldn\'t get hostname')
         
@@ -49,9 +49,13 @@ class PortScan:
         if sType in scanTypes:
             sType = '-' + sType
             self.nm = nmap.PortScanner()
-            self.nm.scan(hosts=ip, arguments=sType)
+            if sType == '-F':
+                self.nm.scan(hosts=ip, arguments=sType)
+            else:
+                self.nm.scan(hosts=ip, arguments=sType, ports='1-100')
             print('Done! Here\'s what I got:')
             self.parseResults()
+            print('Open ports: {}'.format(self.ports))
             return self.ports
             
         else:
@@ -59,10 +63,8 @@ class PortScan:
 
     def parseResults(self):
         for host in self.nm.all_hosts():
-            print('----------------------------------------------------')
-            print('Host : %s (%s)' % (host, self.nm[host].hostname()))
-            print('State : %s' % self.nm[host].state())
-            print('----------------------------------------------------')
+            print('%s is %s' % (self.nm[host].hostname(), self.nm[host].state()))
+            # print('State : %s' % self.nm[host].state())
 
             for proto in self.nm[host].all_protocols():
                 lport = self.nm[host][proto].keys()
@@ -75,10 +77,20 @@ class Whois:
         self.ip = ip
         self.results = ""
 
-    def getInfo(self, hostName="", ip=""):
-        self.results = whois.whois(hostName)
-        self.whoisReturn = self.parseResults()
-        return self.whoisReturn
+    def getInfo(self):
+        if not self.hostName:
+            try:
+                self.results = whois.whois(self.ip)
+            except:
+                print('Could not get results')
+        else:
+            try:
+                self.results = whois.whois(self.hostName)
+                self.whoisReturn = self.parseResults()
+                return self.whoisReturn
+            except:
+                print('Could not get info')
+        
     
     def parseResults(self):
         whoisResults = {}
@@ -89,4 +101,6 @@ class Whois:
         whoisResults['address'] = self.results['address']
         whoisResults['state'] = self.results['state']
         whoisResults['city'] = self.results['city']
+
         return whoisResults
+        

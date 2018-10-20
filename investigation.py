@@ -8,18 +8,6 @@ class Investigate:
     def __init__(self):
         self.host = Host()
 
-    def changeIP(self):
-        print('Please enter IP address of host: ')
-        ip = input('(e.g. 10.80.1.1) > ')
-        self.host.ip = ip
-        print('Assigned host ip of {}'.format(self.host.ip))
-
-    def changeDomain(self):
-        print('Please enter Domain Name of host: ')
-        domainName = input('(e.g. google.com) > ')    
-        self.host.domainName = domainName
-        print('Assigned host domain name of {}'.format(self.host.domainName))
-
     def hostInfo(self):
         print('----------------------------------------------------')
 
@@ -67,10 +55,10 @@ class Investigate:
 
             if cmd == '1':
                 valid = True
-                self.changeIP()
+                self.host.changeIP()
             elif cmd == '2':
                 valid = True
-                self.changeDomain()
+                self.host.changeDomain()
 
             else:
                 print('Choose a valid option!')
@@ -86,11 +74,37 @@ class Investigate:
         print('3: Lookup missing info')
         print('4: Nmap it')
         print('5: Get whois info')
+        print('6: Auto Investigate')
         print('96: Export Investigation')
         print('97: Change IP')
         print('98: Change Domain Name')
         print('99: Back to main menu (destroys current investigation)')
 
+    def autoSherlock(self):
+        print()
+        print('Let me see what I can get for you...')
+        print()
+
+        lookup = Lookup()
+        if not self.host.domainName:
+            self.host = lookup.doLookup(self.host)
+        elif not self.host.ip:
+            self.host = lookup.doLookup(self.host)
+
+        if not self.host.ports:
+            sType = 'F'
+            scan = PortScan(self.host.ip, sType)
+            self.host.ports = scan.runScan(self.host.ip, sType)
+
+        if not self.host.whoisInfo:
+                if not self.host.domainName:
+                    self.whoisLookup = Whois(ip=self.host.ip)
+                else:
+                    self.whoisLookup = Whois(hostName=self.host.domainName)
+                self.host.whoisInfo = self.whoisLookup.getInfo()
+
+        
+    
     def investigation(self):
         
         self.openInvestigation()
@@ -109,7 +123,7 @@ class Investigate:
                 self.printReport()
 
             elif cmd == '3':
-                lookup = Lookup(self.host)
+                lookup = Lookup()
                 self.host = lookup.doLookup(self.host)
                 if self.host.ip and self.host.domainName:
                     self.hostInfo()
@@ -121,21 +135,26 @@ class Investigate:
                 self.host.ports = scan.runScan(self.host.ip, sType)
 
             elif cmd == '5':
-                whoisLookup = ""
                 if not self.host.domainName:
-                    whoisLookup = Whois(ip=self.host.ip)
+                    self.whoisLookup = Whois(ip=self.host.ip)
                 else:
-                    whoisLookup = Whois(hostName=self.host.domainName)
-                self.host.whoisInfo = whoisLookup.getInfo(self.host.domainName)
+                    self.whoisLookup = Whois(hostName=self.host.domainName)
+                self.host.whoisInfo = self.whoisLookup.getInfo()
+
+            elif cmd == '6':
+                if not self.host.ip and not self.host.domainName:
+                    print('I don\'t have enough info for that yet!')
+                else:
+                    self.autoSherlock()
 
             elif cmd == '96':
                 self.exportReport()
 
             elif cmd == '97':
-                self.changeIP()
+                self.host.changeIP()
 
             elif cmd == '98':
-                self.changeDomain()
+                self.host.changeDomain()
 
             elif cmd == '99':
                 print('[!] Quitting!')
@@ -153,6 +172,14 @@ class Host:
         self.ports = []
         self.whoisInfo = {}
 
-    
+    def changeIP(self):
+        print('Please enter IP address of host: ')
+        ip = input('(e.g. 10.80.1.1) > ')
+        self.ip = ip
+        print('Assigned host ip of {}'.format(self.ip))
 
-    
+    def changeDomain(self):
+        print('Please enter Domain Name of host: ')
+        domainName = input('(e.g. google.com) > ')    
+        self.domainName = domainName
+        print('Assigned host domain name of {}'.format(self.domainName))
