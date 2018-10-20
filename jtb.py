@@ -13,6 +13,7 @@ class Main:
         parser = argparse.ArgumentParser(description='Investigate from the command line')
         parser.add_argument('-i', '--ip', type=str, help = 'IP to investigate')
         parser.add_argument('-n', '--hostname', type=str, help ='Hostname to investigate')
+        parser.add_argument('-r', '--report', type=str, help='Report to import')
         self.args = parser.parse_args()
 
     def importInvestigation(self, filepath=None):
@@ -44,10 +45,6 @@ class Main:
             else:
                 print('Wrong number of arguments in saved report')
                 print(inReport)
-            
-
-
-
 
     def displayIntro(self):
         print('\033c')
@@ -107,6 +104,11 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
             elif self.args.hostname:
                 self.host.domainName = self.args.hostname
                 ready = True
+            elif self.args.report:
+                self.importInvestigation(self.args.report)
+                newInvestigation.printReport(self.host)
+                newInvestigation = Investigate(self.host)
+                newInvestigation.investigation()
             else:
                 print('Not useful arguments!')
             print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
