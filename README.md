@@ -34,9 +34,19 @@ And you're good to go!
 
 Using is very simple, that's the whole point. Not just to help us that do this manually everyday but also to make it easier for newbs to do these looks more quickly!
 
-Just `cd` into the `jtb_investigator` directory and run `main.py` with `./main.py` or `python3 main.py`
+### Menu Driven
+
+Just `cd` into the `jtb_investigator` directory and run `jtb.py` with `./jtb.py` or `python3 jtb.py`
 
 Once running just follow the prompts!
+
+### Command line usage
+
+Using the command line makes the lookups even faster. After I added this feature I realized there isn't much point of the menu driven part but ASCII art is fun so...
+
+Anyway it's easy to automate it all with: `./jtb.py -i <ip to investigate>` or `python3 jtb.py -n <hostname to investigate>`
+
+This will spit the report into the `reports/` directory in `<hostname or ip>_report.txt`.
 
 ## General Guidance
 
@@ -99,7 +109,7 @@ It is written to be easily extended. All the options are classes in the `modules
 ### General improvements
 
 1. Add import investigation
-2. Add help in menu
+2. ~~Add help in menu~~
 3. Stability improvements
 
 ### Feature additions
@@ -108,7 +118,7 @@ It is written to be easily extended. All the options are classes in the `modules
 2. Add more investigation modules
 3. Add different export formats
 4. Clean up auto-investigate
-5. Add command line options to expedite startup
+5. ~~Add command line options to expedite startup~~
 
 
 

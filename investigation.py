@@ -18,27 +18,35 @@ class Investigate:
         print()
         print('----------------------------------------------------')
 
-    def printReport(self):
+    def printReport(self, host=None):
+        if not host:
+            print('No host argument provided')
+            return
+        
         print()
         print('----------------------------------------------------')
-        for prop, val in vars(self.host).items():
+        for prop, val in vars(host).items():
             print('{} : {}'.format(prop, val))
         print('----------------------------------------------------')
 
-    def exportReport(self):
+    def exportReport(self, host):
+        if not host:
+            print('No host provided!')
+            return
+
         print('Exporting report...')
 
         reportDir = curDir + '/reports'
         if not os.path.isdir(reportDir):
               os.mkdir(reportDir)
 
-        if not self.host.domainName:
-            reportPath = reportDir + '/' + self.host.ip + '_report.txt'
+        if not host.domainName:
+            reportPath = reportDir + '/' + host.ip + '_report.txt'
         else:
-            reportPath = reportDir + '/' + self.host.domainName + '_report.txt'
+            reportPath = reportDir + '/' + host.domainName + '_report.txt'
 
         with open(reportPath, 'w') as f:
-            for prop, val in vars(self.host).items():
+            for prop, val in vars(host).items():
                 f.write('{} : {}\n'.format(prop, val))
         print('Report Exported to {}!'.format(reportPath))
 
@@ -106,28 +114,32 @@ Version: 0.1
 `99`: Go back to main menu. Destroys current investigation
         """)
 
-    def autoSherlock(self):
+    def autoSherlock(self, host=None):
         print()
         print('Let me see what I can get for you...')
         print()
 
+        if not host:
+            return
+
         lookup = Lookup()
-        if not self.host.domainName:
-            self.host = lookup.doLookup(self.host)
-        elif not self.host.ip:
-            self.host = lookup.doLookup(self.host)
+        if not host.domainName:
+            host = lookup.doLookup(host)
+        elif not host.ip:
+            host = lookup.doLookup(host)
 
-        if not self.host.ports:
+        if not host.ports:
             sType = 'F'
-            scan = PortScan(self.host.ip, sType)
-            self.host.ports = scan.runScan(self.host.ip, sType)
+            scan = PortScan(host.ip, sType)
+            host.ports = scan.runScan(host.ip, sType)
 
-        if not self.host.whoisInfo:
-                if not self.host.domainName:
-                    self.whoisLookup = Whois(ip=self.host.ip)
+        if not host.whoisInfo:
+                if not host.domainName:
+                    self.whoisLookup = Whois(ip=host.ip)
                 else:
-                    self.whoisLookup = Whois(hostName=self.host.domainName)
-                self.host.whoisInfo = self.whoisLookup.getInfo()
+                    self.whoisLookup = Whois(hostName=host.domainName)
+                host.whoisInfo = self.whoisLookup.getInfo()
+        return host
 
         
     
@@ -146,7 +158,7 @@ Version: 0.1
                self.hostInfo()
 
             elif cmd == '2':
-                self.printReport()
+                self.printReport(self.host)
 
             elif cmd == '3':
                 lookup = Lookup()
@@ -171,10 +183,10 @@ Version: 0.1
                 if not self.host.ip and not self.host.domainName:
                     print('I don\'t have enough info for that yet!')
                 else:
-                    self.autoSherlock()
+                    self.autoSherlock(self.host)
 
             elif cmd == '96':
-                self.exportReport()
+                self.exportReport(self.host)
 
             elif cmd == '97':
                 self.host.changeIP()
@@ -192,11 +204,11 @@ Version: 0.1
     
 
 class Host:
-    def __init__(self, ip="", domainName=""):
+    def __init__(self, ip="", domainName="", ports=[], whoisInfo={}):
         self.ip = ip
         self.domainName = domainName
-        self.ports = []
-        self.whoisInfo = {}
+        self.ports = None
+        self.whoisInfo = None
 
     def changeIP(self):
         

@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os, sys, argparse
 from investigation import Investigate, Host
 
 class Main:
     
-    def __init__(self):
-       pass
+    def __init__(self, host=None, args=None):
+       self.host = host
+       self.args = args
 
-    
+    def parse_args(self):
+        parser = argparse.ArgumentParser(description='Investigate from the command line')
+        parser.add_argument('-i', '--ip', type=str, help = 'IP to investigate')
+        parser.add_argument('-n', '--hostname', type=str, help ='Hostname to investigate')
+        self.args = parser.parse_args()
+
+
     def displayIntro(self):
         print('\033c')
         print("""
@@ -51,7 +58,27 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
 
     def run(self):
         
+        if self.args:
+            newInvestigation = Investigate()
+            self.host = Host()
 
+            if self.args.ip and self.args.hostname:
+                self.host.ip = self.args.ip
+                self.host.domainName = self.args.hostname
+            elif self.args.ip:
+                self.host.ip = self.args.ip
+            elif self.args.hostname:
+                self.host.domainName = self.args.hostname
+            else:
+                print('Not useful arguments!')
+            print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
+
+            self.host = newInvestigation.autoSherlock(self.host)
+            newInvestigation.printReport(self.host)
+            newInvestigation.exportReport(self.host)
+
+            sys.exit(0)
+            
         while True:
             self.displayIntro()
             self.displayMainMenu()
@@ -77,6 +104,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
 
 if __name__ == '__main__':
     new = Main()
+    new.parse_args()
     try:
         new.run()
     except KeyboardInterrupt:
