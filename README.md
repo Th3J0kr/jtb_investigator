@@ -78,7 +78,7 @@ Choose an option:
 
 ### Menu Options
 
-`0`: Display help information (not added yet)
+`0`: Display help information
 
 `1`: Print info about the host (IP and Domain)
 

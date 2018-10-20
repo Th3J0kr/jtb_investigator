@@ -78,6 +78,10 @@ class Whois:
         self.results = ""
 
     def getInfo(self):
+        print()
+        print('Getting whois info!')
+        print()
+
         if not self.hostName:
             try:
                 self.results = whois.whois(self.ip)

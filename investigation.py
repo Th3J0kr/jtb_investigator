@@ -5,8 +5,10 @@ curDir = os.getcwd()
 
 class Investigate:
     
-    def __init__(self):
-        self.host = Host()
+    def __init__(self, host=None):
+        self.host = host
+        if not self.host:
+            self.host = Host()
 
     def hostInfo(self):
         print('----------------------------------------------------')
@@ -145,8 +147,6 @@ Version: 0.1
     
     def investigation(self):
         
-        self.openInvestigation()
-
         while True:
             self.displayInvestMenu()
 
@@ -204,11 +204,11 @@ Version: 0.1
     
 
 class Host:
-    def __init__(self, ip="", domainName="", ports=[], whoisInfo={}):
+    def __init__(self, ip=None, domainName=None, ports=None, whoisInfo=None):
         self.ip = ip
         self.domainName = domainName
-        self.ports = None
-        self.whoisInfo = None
+        self.ports = ports
+        self.whoisInfo = whoisInfo
 
     def changeIP(self):
         

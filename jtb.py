@@ -15,6 +15,39 @@ class Main:
         parser.add_argument('-n', '--hostname', type=str, help ='Hostname to investigate')
         self.args = parser.parse_args()
 
+    def importInvestigation(self, filepath=None):
+        if not filepath:
+            print('Please provide a filepath of the investigation to import:')
+            filepath = input('> ')
+        
+        if not os.path.isfile(filepath):
+            print('Couldn\'t find the file!')
+        else:
+            print('Importing Investigation {}'.format(filepath))
+
+            inReport = []
+
+            with open(filepath) as f:
+                report = f.read()
+                parts = report.split('\n')
+                for prop in parts:
+                    bits = prop.split(' : ')
+                    try:
+                        if bits[1]:
+                            inReport.append(bits[1])
+                    except:
+                        pass
+            f.close
+
+            if len(inReport) == 4:
+                self.host = Host(ip=inReport[0], domainName=inReport[1], ports=inReport[2], whoisInfo=inReport[3])
+            else:
+                print('Wrong number of arguments in saved report')
+                print(inReport)
+            
+
+
+
 
     def displayIntro(self):
         print('\033c')
@@ -54,6 +87,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
         print()
         print('Choose an option: ')
         print('1: Open a new investigation')
+        print('2: Import a previous investigation')
         print('99: Quit')
 
     def run(self):
@@ -92,8 +126,15 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
 
             if cmd == '1':
                 newInvestigation = Investigate()
+                newInvestigation.openInvestigation()
                 newInvestigation.investigation()
    
+            elif cmd == '2':
+                self.importInvestigation()
+                newInvestigation.printReport(self.host)
+                newInvestigation = Investigate(self.host)
+                newInvestigation.investigation()
+            
             elif cmd == '99':
                 print('[!] Quitting!')
                 try:
