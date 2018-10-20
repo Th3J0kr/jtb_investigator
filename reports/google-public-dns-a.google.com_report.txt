@@ -1,0 +1,4 @@
+ip : 8.8.8.8
+domainName : google-public-dns-a.google.com
+ports : [53, 443]
+whoisInfo : {'domain_name': ['GOOGLE.COM', 'google.com'], 'name': None, 'organization': 'Google LLC', 'address': None, 'state': 'CA', 'city': None}

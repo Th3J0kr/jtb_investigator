@@ -59,25 +59,29 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
     def run(self):
         
         if self.args:
+            ready = False
             newInvestigation = Investigate()
             self.host = Host()
 
             if self.args.ip and self.args.hostname:
                 self.host.ip = self.args.ip
                 self.host.domainName = self.args.hostname
+                ready = True
             elif self.args.ip:
                 self.host.ip = self.args.ip
+                ready = True
             elif self.args.hostname:
                 self.host.domainName = self.args.hostname
+                ready = True
             else:
                 print('Not useful arguments!')
             print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
 
-            self.host = newInvestigation.autoSherlock(self.host)
-            newInvestigation.printReport(self.host)
-            newInvestigation.exportReport(self.host)
-
-            sys.exit(0)
+            if ready:
+                self.host = newInvestigation.autoSherlock(self.host)
+                newInvestigation.printReport(self.host)
+                newInvestigation.exportReport(self.host)
+                sys.exit(0)
             
         while True:
             self.displayIntro()
