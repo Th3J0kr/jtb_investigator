@@ -21,9 +21,9 @@ class AsnLookup:
         else:
             asndb = pyasn.pyasn('asn_db/ipasn_db_main.dat')
             asnNum = asndb.lookup(ip)
-            print()
-            print('{} ASN number: {}'.format(ip, asnNum[0]))
-            print()
+            # print()
+            # print('{} ASN number: {}'.format(ip, asnNum[0]))
+            # print()
             return asnNum[0]
 
     def getDetails(self, asnNum):
@@ -67,6 +67,7 @@ class PortScan:
         self.ip = ip
         self.sType = sType
         self.ports = []
+        self.state = ""
 
     def runScan(self, ip, sType):
         print('Running {} scan on {}...'. format(sType, ip))
@@ -86,7 +87,8 @@ class PortScan:
             print('Done! Here\'s what I got:')
             self.parseResults()
             print('Open ports: {}'.format(self.ports))
-            return self.ports
+            returnL = [self.ports, self.state]
+            return returnL
             
         else:
             print('I don\'t run that kind of scan')
@@ -94,7 +96,7 @@ class PortScan:
     def parseResults(self):
         for host in self.nm.all_hosts():
             print('%s is %s' % (self.nm[host].hostname(), self.nm[host].state()))
-            # print('State : %s' % self.nm[host].state())
+            self.state = self.nm[host].state()
 
             for proto in self.nm[host].all_protocols():
                 lport = self.nm[host][proto].keys()

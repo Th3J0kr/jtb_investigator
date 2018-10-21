@@ -14,6 +14,7 @@ class Main:
         parser.add_argument('-i', '--ip', type=str, help = 'IP to investigate')
         parser.add_argument('-n', '--hostname', type=str, help ='Hostname to investigate')
         parser.add_argument('-r', '--report', type=str, help='Report to import')
+        parser.add_argument('-d', '--disable', action='store_true', help='Disable auto investigate when starting with option')
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
 
@@ -58,8 +59,9 @@ class Main:
                             inReport.append(prop[1])
             f.close
        
-            if len(inReport) == 6:
-                self.host = Host(ip=inReport[0], domainName=inReport[1], ports=inReport[2], whoisInfo=inReport[3], asnNum=inReport[4], asnInfo=inReport[5])
+            if len(inReport) == 7:
+                self.host = Host(ip=inReport[0], domainName=inReport[1], status=inReport[2], ports=inReport[3], 
+                                whoisInfo=inReport[4], asnNum=inReport[5], asnInfo=inReport[6])
             else:
                 print('Wrong number of arguments in saved report')
                 print(inReport)
@@ -154,7 +156,11 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
             else:
                 print('Not useful arguments!')
             #print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
-
+            if self.args.disable:
+                ready = False
+                newInvestigation = Investigate(self.host)
+                newInvestigation.printReport(self.host)
+                newInvestigation.investigation()
             if ready:
                 self.host = newInvestigation.autoSherlock(self.host)
                 newInvestigation.printReport(self.host)

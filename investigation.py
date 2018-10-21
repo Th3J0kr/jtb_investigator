@@ -187,7 +187,9 @@ Version: 0.2
         if not host.ports:
             sType = 'F'
             scan = PortScan(host.ip, sType)
-            host.ports = scan.runScan(host.ip, sType)
+            resultL = scan.runScan(host.ip, sType)
+            host.ports = resultL[0]
+            host.status = resultL[1]
 
         if not host.whoisInfo:
                 if not host.domainName:
@@ -198,7 +200,10 @@ Version: 0.2
         if host.ip:
             asnLookup = AsnLookup()
             host.asnNum = asnLookup.lookup(host.ip)
-        self.printReport(host)
+            if host.asnNum:
+                host.asnInfo = asnLookup.getDetails(host.asnNum)
+
+        #self.printReport(host)
 
         return host
 
@@ -231,7 +236,9 @@ Version: 0.2
                 sType = input('> ')
                 if self.host.ip:
                     scan = PortScan(self.host.ip, sType)
-                    self.host.ports = scan.runScan(self.host.ip, sType)
+                    resultL = scan.runScan(self.host.ip, sType)
+                    self.host.ports = resultL[0]
+                    self.host.status = resultL[1]
                 else:
                     print('Need an IP first!')
 
@@ -241,6 +248,7 @@ Version: 0.2
                 else:
                     self.whoisLookup = Whois(hostName=self.host.domainName)
                 self.host.whoisInfo = self.whoisLookup.getInfo()
+                self.printReport(self.host)
 
             elif cmd == '6':
                 asnLookup = AsnLookup()
@@ -255,6 +263,7 @@ Version: 0.2
                     else:
                         self.host.asnNum = asnLookup.lookup(self.host.ip)
                         self.host.asnInfo = asnLookup.getDetails(self.host.asnNum)
+                        self.printReport(self.host)
                 else:
                     print('I need an IP first!')
             
@@ -289,9 +298,10 @@ Version: 0.2
     
 
 class Host:
-    def __init__(self, ip=None, domainName=None, ports=None, whoisInfo=None, asnNum=None, asnInfo=None):
+    def __init__(self, ip=None, domainName=None, status=None, ports=None, whoisInfo=None, asnNum=None, asnInfo=None):
         self.ip = ip
         self.domainName = domainName
+        self.status = status
         self.ports = ports
         self.whoisInfo = whoisInfo
         self.asnNum = asnNum

@@ -55,6 +55,10 @@ Anyway it's easy to automate it all with: `./jtb.py -i <ip to investigate>` or `
 
 This will spit the report into the `reports/` directory in `<hostname or ip>_report.txt`.
 
+#### Start an investigation with IP and/or hostname from CLI
+
+If you add the `-d` option along with `-i` or `-n` then JTB will start a new investigation with the information provided. Adds control from the CLI.
+
 #### Import via CLI
 
 Run `./jtb.py -r <filepath to report>` to import a report and drop back into the investigation session
@@ -141,6 +145,7 @@ It is written to be easily extended. All the options are classes in the `modules
     * ~~CSV~~
 4. ~~Clean up auto-investigate~~
 5. ~~Add command line options to expedite startup~~
+6. Automate ASN database update
 
 
 
