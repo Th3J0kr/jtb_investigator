@@ -128,6 +128,7 @@ It is written to be easily extended. All the options are classes in the `modules
 5. Optimize nmap
     * ~~Slim down ports~~
     * Make async to avoid wait
+    * Add more scan types?
 
 ### Feature additions
 

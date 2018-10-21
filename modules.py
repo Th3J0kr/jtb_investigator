@@ -61,7 +61,7 @@ class PortScan:
     def runScan(self, ip, sType):
         print('Running {} scan on {}...'. format(sType, ip))
 
-        scanTypes = ['F', 'sS', 'sV', 'A']
+        scanTypes = ['F', 'sS']
         
         if not sType:
             sType = 'F'

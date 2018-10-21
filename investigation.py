@@ -221,13 +221,13 @@ Version: 0.2
                 lookup = Lookup()
                 self.host = lookup.doLookup(self.host)
                 if self.host:
-                    if self.host.ip and self.host.domainName:
+                    if self.host.ip or self.host.domainName:
                         self.hostInfo()
                     else:
                         print('Need an IP or hostname first!')
 
             elif cmd == '4':
-                print('What type of scan do you want to do? (e.g. F (default), sS, sV, A)')
+                print('What type of scan do you want to do? (e.g. F (default), sS)')
                 sType = input('> ')
                 if self.host.ip:
                     scan = PortScan(self.host.ip, sType)
@@ -244,7 +244,7 @@ Version: 0.2
 
             elif cmd == '6':
                 asnLookup = AsnLookup()
-                if not self.host:
+                if self.host:
                     if not self.host.ip:
                         lookup = Lookup()
                         self.host = lookup.doLookup(self.host)
