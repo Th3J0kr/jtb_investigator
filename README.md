@@ -67,7 +67,7 @@ After the super sweet ASCII art, you will be prompted to either start an investi
 
 Hit 1 and you will be asked for an IP or Domain Name. You will not be able to proceed until you provide one or the other to prevent issues down the line.
 
-Hit 2 and you will be asked if you want to import a report you have previously started. Reports are currently all just .txt files. Import and Export to json/csv incoming soon
+Hit 2 and you will be asked if you want to import a report you have previously started. Import and Export to csv/txt is currently supported. JSON coming soon.
 
 ### Investigating
 
