@@ -125,13 +125,13 @@ In the `tools` folder there are more scripts to make this framework even more us
 
 1. `mass_investigator.py`:
 
-* run script with `-i <ips or ranges to investigate>` or `-n hostnames to investigate` to run a batch scan
+    * run script with `-i <ips or ranges to investigate>` or `-n hostnames to investigate` to run a batch scan
 
-    * All reports will be saved to `reports/csv/` directory
+        * All reports will be saved to `reports/csv/` directory
 
-* Add `-f <format>` to specify format to save to. CSV is the default.
+    * Add `-f <format>` to specify format to save to. CSV is the default.
 
-* Use `-r <file>` to run JTB against a file of ips or hostnames each on new lines. Files must start with `ips_` or `hostnames_` based on what is in it.
+    * Use `-r <file>` to run JTB against a file of ips or hostnames each on new lines. Files must start with `ips_` or `hostnames_` based on what is in it.
 
 ## To Do:
 
