@@ -37,7 +37,7 @@ class Lookup:
                     return host
                 else:
                     print('Couldn\'t get IP')
-            except socket.gaierror:
+            except:
                 print('Couldn\'t look up that host')
 
         elif not host.domainName:

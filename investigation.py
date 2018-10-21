@@ -1,5 +1,5 @@
 from modules import Lookup, PortScan, Whois, AsnLookup
-import os, io
+import os, io, csv
 
 curDir = os.getcwd()
 
@@ -31,7 +31,7 @@ class Investigate:
             print('{} : {}'.format(prop, val))
         print('----------------------------------------------------')
 
-    def exportReport(self, host):
+    def exportReport(self, host, rFormat=None):
         if not host:
             print('No host provided!')
             return
@@ -40,16 +40,49 @@ class Investigate:
 
         reportDir = curDir + '/reports'
         if not os.path.isdir(reportDir):
-              os.mkdir(reportDir)
+            os.mkdir(reportDir)
+        if not os.path.isdir(reportDir + '/txt'):
+            os.mkdir(reportDir + '/txt')
+        if not os.path.isdir(reportDir + '/csv'):
+            os.mkdir(reportDir + '/csv')
+        if not os.path.isdir(reportDir + '/json'):
+            os.mkdir(reportDir + '/json')
+
+        rFormats = ['txt', 'csv']
+        try:
+            while rFormat not in rFormats:
+                if not rFormat:
+                    print("What format do you want the report? (txt (default) or csv):")
+                    rFormat = input("> ")
+
+                    if not rFormat:
+                        rFormat = 'txt'
+        except KeyboardInterrupt:
+            print('\r\n\nGoing Back!')
+            return
 
         if not host.domainName:
-            reportPath = reportDir + '/' + host.ip + '_report.txt'
+            reportPath = reportDir + '/' + rFormat + '/' + host.ip + '_report.' + rFormat
         else:
-            reportPath = reportDir + '/' + host.domainName + '_report.txt'
+            reportPath = reportDir + '/' + rFormat + '/' + host.domainName + '_report.' + rFormat
 
-        with open(reportPath, 'w') as f:
-            for prop, val in vars(host).items():
-                f.write('{} : {}\n'.format(prop, val))
+        if rFormat == 'txt':
+            with open(reportPath, 'w') as f:
+                for prop, val in vars(host).items():
+                    f.write('{} : {}\n'.format(prop, val))
+        elif rFormat == 'csv':
+            with open(reportPath, 'w', newline='\n') as f:
+                csvWriter = csv.writer(f, delimiter=',', quotechar='\'', quoting=csv.QUOTE_ALL)
+                props = []
+                vals = []
+                for prop, val in vars(host).items():
+                    props.append(prop)
+                csvWriter.writerow(props)
+                for prop, val in vars(host).items():
+                    vals.append(val)
+                csvWriter.writerow(vals)
+        
+        f.close()
         print('Report Exported to {}!'.format(reportPath))
 
     def openInvestigation(self):
@@ -97,9 +130,11 @@ class Investigate:
     def showHelp(self):
         print("""
 ------
-JTB (Just the basics) Investigator is a simple framework to ease the monotonous looks up many of us do every day. When you get an alert and need to track down an IP or Domain Name or just in general investigation, we often do the same basic look ups (NSLookup, Nmap, whois, etc.) over and over. Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
+JTB (Just the basics) Investigator is a simple framework to ease the monotonous looks up many of us do every day. 
+When you get an alert and need to track down an IP or Domain Name or just in general investigation, we often do the same basic look ups (NSLookup, Nmap, whois, etc.) over and over. 
+Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
 
-Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
+Author: Th3J0kr
 Version: 0.1
 ------
 ##Usage##
@@ -146,11 +181,10 @@ Version: 0.1
         if host.ip:
             asnLookup = AsnLookup()
             host.asNum = asnLookup.lookup(host.ip)
+        self.printReport(host)
 
         return host
 
-        
-    
     def investigation(self):
         
         while True:
@@ -158,7 +192,7 @@ Version: 0.1
 
             cmd = input('> ')
             if cmd == '0':
-                print('Add help')
+                self.showHelp()
 
             elif cmd == '1':
                self.hostInfo()
@@ -169,14 +203,20 @@ Version: 0.1
             elif cmd == '3':
                 lookup = Lookup()
                 self.host = lookup.doLookup(self.host)
-                if self.host.ip and self.host.domainName:
-                    self.hostInfo()
+                if self.host:
+                    if self.host.ip and self.host.domainName:
+                        self.hostInfo()
+                    else:
+                        print('Need an IP or hostname first!')
 
             elif cmd == '4':
                 print('What type of scan do you want to do? (e.g. F (default), sS, sV, A)')
                 sType = input('> ')
-                scan = PortScan(self.host.ip, sType)
-                self.host.ports = scan.runScan(self.host.ip, sType)
+                if self.host.ip:
+                    scan = PortScan(self.host.ip, sType)
+                    self.host.ports = scan.runScan(self.host.ip, sType)
+                else:
+                    print('Need an IP first!')
 
             elif cmd == '5':
                 if not self.host.domainName:
@@ -187,24 +227,33 @@ Version: 0.1
 
             elif cmd == '6':
                 asnLookup = AsnLookup()
-                if not self.host.ip:
-                    lookup = Lookup()
-                    self.host = lookup.doLookup(self.host)
-                if not self.host.ip:
-                    print()
-                    print('Couldn\'t get IP to search!')
-                    print()
+                if not self.host:
+                    if not self.host.ip:
+                        lookup = Lookup()
+                        self.host = lookup.doLookup(self.host)
+                    if not self.host.ip:
+                        print()
+                        print('Couldn\'t get IP to search!')
+                        print()
+                    else:
+                        self.host.asnNum = asnLookup.lookup(self.host.ip)
                 else:
-                    self.host.asnNum = asnLookup.lookup(self.host.ip)
+                    print('I need an IP first!')
             
             elif cmd == '7':
-                if not self.host.ip and not self.host.domainName:
-                    print('I don\'t have enough info for that yet!')
+                if self.host:
+                    if not self.host.ip and not self.host.domainName:
+                        print('I don\'t have enough info for that yet!')
+                    else:
+                        self.autoSherlock(self.host)
                 else:
-                    self.autoSherlock(self.host)
+                    print('You need to add an IP or hostname first!')
 
             elif cmd == '96':
-                self.exportReport(self.host)
+                if self.host.ip or self.host.domainName:
+                    self.exportReport(self.host)
+                else:
+                    print('At least add an IP or hostname first!')
 
             elif cmd == '97':
                 self.host.changeIP()

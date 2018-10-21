@@ -111,7 +111,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 newInvestigation.investigation()
             else:
                 print('Not useful arguments!')
-            print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
+            #print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
 
             if ready:
                 self.host = newInvestigation.autoSherlock(self.host)
@@ -132,10 +132,15 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 newInvestigation.investigation()
    
             elif cmd == '2':
-                self.importInvestigation()
-                newInvestigation.printReport(self.host)
-                newInvestigation = Investigate(self.host)
-                newInvestigation.investigation()
+                try:
+                    self.importInvestigation()
+                    newInvestigation.printReport(self.host)
+                    newInvestigation = Investigate(self.host)
+                    newInvestigation.investigation()
+                except KeyboardInterrupt:
+                    newInvestigation = Investigate()
+                    newInvestigation.openInvestigation()
+                    newInvestigation.investigation()
             
             elif cmd == '99':
                 print('[!] Quitting!')
