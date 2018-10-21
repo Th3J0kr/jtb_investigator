@@ -160,7 +160,7 @@ It is written to be easily extended. All the options are classes in the `modules
 6. Automate ASN database update
 
 ### Tools
-1. Mass Investigator
+1. ~~Mass Investigator~~
 2. ~~ASN DB updater~~
 
 
