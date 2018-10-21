@@ -124,7 +124,7 @@ It is written to be easily extended. All the options are classes in the `modules
 1. ~~Add import investigation~~
 2. ~~Add help in menu~~
 3. ~~Stability improvements~~
-4. Make import function more robust
+4. ~~Make import function more robust~~
 5. Optimize nmap
     * ~~Slim down ports~~
     * Make async to avoid wait

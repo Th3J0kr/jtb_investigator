@@ -27,6 +27,7 @@ class Investigate:
         
         print()
         print('----------------------------------------------------')
+        print()
         for prop, val in vars(host).items():
             print('{} : {}'.format(prop, val))
         print('----------------------------------------------------')

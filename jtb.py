@@ -34,10 +34,9 @@ class Main:
 
             if fileType == 'txt':
                 with open(filepath, 'r') as f:
-                    report = f.read()
-                    parts = report.split('\n')
-                    for prop in parts:
-                        bits = prop.split(' : ')
+                    report = f.readlines()
+                    for line in report:
+                        bits = line.split(' : ')
                         try:
                             if bits[1]:
                                 inReport.append(bits[1])
