@@ -11,7 +11,7 @@ JTB (Just the basics) Investigator is a simple framework to ease the monotonous 
 
 Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
 
-Version: 0.2
+Version: 1.0
 
 ------
 

@@ -7,6 +7,7 @@ def parse_args():
         parser.add_argument('-i', '--ip', type=str, help = 'IPs or range to investigate separated by spaces (enclose in quotes)')
         parser.add_argument('-n', '--hostname', type=str, help ='Hostnames to investigate separated by spaces (enclose in quotes)')
         parser.add_argument('-f', '--format', type=str, help='Format to export file to (csv (default), json, txt)')
+        parser.add_argument('-r', '--read', type=str, help='File to read ips or hostnames from. (start filename with ips or hostnames e.g. hostnames_10282018.txt)')
         args = parser.parse_args()
         return args
 
@@ -18,6 +19,21 @@ def main():
         ipL = args.ip.split(' ')
     elif args.hostname:
         hostL = args.hostname.split(' ')
+    elif args.read:
+        readFile = args.read
+        with open(readFile, 'r') as f:
+            if 'hostnames' in readFile:
+                hosts = f.readlines()
+                for h in hosts:
+                    hostL.append(h.strip('\n'))
+            elif 'ips' in readFile:
+                hosts = f.readlines()
+                for h in hosts:
+                    ipL.append(h)
+            else:
+                print('[!] I don\'t understand that file type! Make sure it starts with ips or hostnames!')
+        f.close
+        print(hostL)
     else:
         print('[!] No arguments... Exiting!')
         sys.exit(0)
