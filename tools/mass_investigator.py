@@ -44,12 +44,11 @@ def main():
     sys.path.insert(0, jtbPath)
     import jtb
     import investigation
-    host = investigation.Host()
-
     
     if ipL:
         print('[*] Got IPs, running investigations.')
         for ip in ipL:
+            host = investigation.Host
             host.ip = ip
             newInvestigation = investigation.Investigate()
             host = newInvestigation.autoSherlock(host)
@@ -60,6 +59,7 @@ def main():
     if hostL:
         print('[*] Got hosts, running investigaitons.')
         for inHost in hostL:
+            host = investigation.Host()
             host.domainName = inHost
             newInvestigation = investigation.Investigate()
             host = newInvestigation.autoSherlock(host)

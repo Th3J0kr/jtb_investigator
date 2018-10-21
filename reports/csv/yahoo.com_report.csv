@@ -1,2 +1,2 @@
 'ip','domainName','status','ports','whoisInfo','asnNum','asnInfo'
-'45.33.32.156','yahoo.com','up','[22, 25, 80]','{''domain_name'': ''NMAP.ORG'', ''name'': None, ''organization'': ''Insecure.Com LLC'', ''address'': None, ''state'': ''WA'', ''city'': None}','63949','{''ISP'': ''LINODE-AP Linode, LLC, US'', ''Country'': ''US'', ''Registry'': ''apnic'', ''Date Registered'': ''2015-02-16''}'
+'72.30.35.9','yahoo.com','up','[80, 443]','{''domain_name'': [''YAHOO.COM'', ''yahoo.com''], ''name'': None, ''organization'': ''Yahoo! Inc.'', ''address'': None, ''state'': ''CA'', ''city'': None}','26101','{''ISP'': ''YAHOO-3 - Yahoo!, US'', ''Country'': ''US'', ''Registry'': ''arin'', ''Date Registered'': ''2002-07-05''}'
