@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, sys, argparse, math, csv
+import os, sys, argparse, math, csv, json
 from investigation import Investigate, Host
 
 class Main:
@@ -33,7 +33,7 @@ class Main:
             inReport = []
 
             if fileType == 'txt':
-                with open(filepath) as f:
+                with open(filepath, 'r') as f:
                     report = f.read()
                     parts = report.split('\n')
                     for prop in parts:
@@ -44,15 +44,21 @@ class Main:
                         except:
                             pass
             elif fileType == 'csv':
-                with open(filepath) as f:
+                with open(filepath, 'r') as f:
                     readCSV = csv.reader(f, delimiter=',', quotechar='\'', quoting=csv.QUOTE_ALL)
                     i = 0
                     for row in readCSV:
                         if i >= 1:
                             inReport = row
                         i = i + 1
+            elif fileType == 'json':
+                with open(filepath, 'r') as f:
+                    data = json.load(f)
+                    for host in data:
+                        for prop in data[host].items():
+                            inReport.append(prop[1])
             f.close
-
+       
             if len(inReport) == 5:
                 self.host = Host(ip=inReport[0], domainName=inReport[1], ports=inReport[2], whoisInfo=inReport[3], asnNum=inReport[4])
             else:

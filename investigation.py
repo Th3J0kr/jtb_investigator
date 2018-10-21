@@ -1,5 +1,5 @@
 from modules import Lookup, PortScan, Whois, AsnLookup
-import os, io, csv
+import os, io, csv, json
 
 curDir = os.getcwd()
 
@@ -48,11 +48,11 @@ class Investigate:
         if not os.path.isdir(reportDir + '/json'):
             os.mkdir(reportDir + '/json')
 
-        rFormats = ['txt', 'csv']
+        rFormats = ['txt', 'csv', 'json']
         try:
             while rFormat not in rFormats:
                 if not rFormat:
-                    print("What format do you want the report? (txt (default) or csv):")
+                    print("What format do you want the report? (txt (default), csv, or json):")
                     rFormat = input("> ")
 
                     if not rFormat:
@@ -81,8 +81,24 @@ class Investigate:
                 for prop, val in vars(host).items():
                     vals.append(val)
                 csvWriter.writerow(vals)
-        
+        elif rFormat == 'json':
+            outDict = {}
+            if host.domainName:
+                outDict = {host.domainName : {}}
+                for prop, val in vars(host).items():
+                    outDict[host.domainName][prop] = val
+            elif host.ip:
+                outDict = {host.ip : {}}
+                for prop, val in vars(host).items():
+                    outDict[host.ip][prop] = val
+            else:
+                print('At least get an IP or hostname first!')
+            #print(json.dumps(outDict))
+            with open(reportPath, 'w') as f:
+                json.dump(outDict, f)
+
         f.close()
+        print()
         print('Report Exported to {}!'.format(reportPath))
 
     def openInvestigation(self):
