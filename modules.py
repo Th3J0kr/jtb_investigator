@@ -4,6 +4,7 @@ import nmap
 import whois
 import pyasn
 import os
+import subprocess
 
 class AsnLookup:
     
@@ -24,6 +25,15 @@ class AsnLookup:
             print('{} ASN number: {}'.format(ip, asnNum[0]))
             print()
             return asnNum[0]
+
+    def getDetails(self, asnNum):
+        ASN = str(asnNum)
+        querycmd2 = 'AS' + ASN + '.asn.cymru.com'
+        response2 = subprocess.Popen(['dig', '-t', 'TXT', querycmd2, '+short'], stdout=subprocess.PIPE).communicate()[0]
+        #response2List = response2.split('|')
+        asnInfoL = response2.decode().strip('\n "').split(' | ')
+        asnInfo = {"ISP" : asnInfoL[4], "Country" : asnInfoL[1], "Registry" : asnInfoL[2], "Date Registered" : asnInfoL[3]}
+        return asnInfo
 
 
 class Lookup:

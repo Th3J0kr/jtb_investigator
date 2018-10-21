@@ -254,6 +254,7 @@ Version: 0.2
                         print()
                     else:
                         self.host.asnNum = asnLookup.lookup(self.host.ip)
+                        self.host.asnInfo = asnLookup.getDetails(self.host.asnNum)
                 else:
                     print('I need an IP first!')
             
@@ -288,12 +289,13 @@ Version: 0.2
     
 
 class Host:
-    def __init__(self, ip=None, domainName=None, ports=None, whoisInfo=None, asnNum=None):
+    def __init__(self, ip=None, domainName=None, ports=None, whoisInfo=None, asnNum=None, asnInfo=None):
         self.ip = ip
         self.domainName = domainName
         self.ports = ports
         self.whoisInfo = whoisInfo
         self.asnNum = asnNum
+        self.asnInfo = asnInfo
 
     def changeIP(self):
         

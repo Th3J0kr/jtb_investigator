@@ -58,8 +58,8 @@ class Main:
                             inReport.append(prop[1])
             f.close
        
-            if len(inReport) == 5:
-                self.host = Host(ip=inReport[0], domainName=inReport[1], ports=inReport[2], whoisInfo=inReport[3], asnNum=inReport[4])
+            if len(inReport) == 6:
+                self.host = Host(ip=inReport[0], domainName=inReport[1], ports=inReport[2], whoisInfo=inReport[3], asnNum=inReport[4], asnInfo=inReport[5])
             else:
                 print('Wrong number of arguments in saved report')
                 print(inReport)
