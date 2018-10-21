@@ -11,7 +11,7 @@ JTB (Just the basics) Investigator is a simple framework to ease the monotonous 
 
 Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
 
-Version: 0.1
+Version: 0.2
 
 ------
 
@@ -20,10 +20,10 @@ Version: 0.1
 The setup is very simple:
 
 ##### Ensure you have nmap, whois, and python 3 installed on the system
-###### *Only tested on linux systems with python 3.7 at the moment*
+###### *Only tested on linux systems with python 3.7 (but should work with all python3)*
 
 ### Install python requirements with pip
-`pip3 install -r requirements.txt` or `pip3 install python-nmap python-whois`
+`pip3 install -r requirements.txt`
 
 ### Clone the repo
 `git clone https://github.com/Th3J0kr/jtb_investigator.git`
@@ -105,7 +105,7 @@ Choose an option:
 
 `6`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
 
-`96`: Save the investigation to a file in `./reports/<hostname or ip>_report.txt`
+`96`: Export the report to a file. Currently support CSV and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
 
 `97`: Change IP of target
 
@@ -123,7 +123,7 @@ It is written to be easily extended. All the options are classes in the `modules
 
 1. ~~Add import investigation~~
 2. ~~Add help in menu~~
-3. Stability improvements
+3. ~~Stability improvements~~
 4. Make import function more robust
 5. Optimize nmap
     * Slim down ports
@@ -137,7 +137,7 @@ It is written to be easily extended. All the options are classes in the `modules
     * BGP
 3. Add different export formats
     * JSON
-    * CSV
+    * ~~CSV~~
 4. ~~Clean up auto-investigate~~
 5. ~~Add command line options to expedite startup~~
 

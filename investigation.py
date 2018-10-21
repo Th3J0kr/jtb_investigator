@@ -135,7 +135,7 @@ When you get an alert and need to track down an IP or Domain Name or just in gen
 Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
 
 Author: Th3J0kr
-Version: 0.1
+Version: 0.2
 ------
 ##Usage##
 
@@ -147,7 +147,7 @@ Version: 0.1
 `5`: Do a whois lookup and store import information to investigation report
 `6`: Get the ASN Number from the IP
 `7`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
-`96`: Save the investigation to a file in `./reports/<hostname or ip>_report.txt`
+`96`: Export the report to a file. Currently support CSV and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
 `97`: Change IP of target
 `98`: Change Domain Name of target
 `99`: Go back to main menu. Destroys current investigation

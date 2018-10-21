@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, sys, argparse
+import os, sys, argparse, math, csv
 from investigation import Investigate, Host
 
 class Main:
@@ -14,12 +14,16 @@ class Main:
         parser.add_argument('-i', '--ip', type=str, help = 'IP to investigate')
         parser.add_argument('-n', '--hostname', type=str, help ='Hostname to investigate')
         parser.add_argument('-r', '--report', type=str, help='Report to import')
+        parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
 
     def importInvestigation(self, filepath=None):
         if not filepath:
             print('Please provide a filepath of the investigation to import:')
             filepath = input('> ')
+
+        fileParts = filepath.split('.')
+        fileType = fileParts[-1]
         
         if not os.path.isfile(filepath):
             print('Couldn\'t find the file!')
@@ -28,16 +32,25 @@ class Main:
 
             inReport = []
 
-            with open(filepath) as f:
-                report = f.read()
-                parts = report.split('\n')
-                for prop in parts:
-                    bits = prop.split(' : ')
-                    try:
-                        if bits[1]:
-                            inReport.append(bits[1])
-                    except:
-                        pass
+            if fileType == 'txt':
+                with open(filepath) as f:
+                    report = f.read()
+                    parts = report.split('\n')
+                    for prop in parts:
+                        bits = prop.split(' : ')
+                        try:
+                            if bits[1]:
+                                inReport.append(bits[1])
+                        except:
+                            pass
+            elif fileType == 'csv':
+                with open(filepath) as f:
+                    readCSV = csv.reader(f, delimiter=',', quotechar='\'', quoting=csv.QUOTE_ALL)
+                    i = 0
+                    for row in readCSV:
+                        if i >= 1:
+                            inReport = row
+                        i = i + 1
             f.close
 
             if len(inReport) == 5:
@@ -45,6 +58,25 @@ class Main:
             else:
                 print('Wrong number of arguments in saved report')
                 print(inReport)
+
+    def printVersion(self):
+        print()
+        print('=-'*21)
+        print('= JTB Investigator Version: 0.2 \t=-')
+        print('=-'*21)
+        print('= Author: Th3J0kr \t\t\t=-')
+        print('=-'*29)
+        print('= https://www.github.com/th3J0kr/jtb_investigator \t=-')
+        print('=-'*29)
+        pVersion = sys.version
+        pVersion = pVersion.split(' ')
+        print('= Python version {} \t\t\t=-'.format(pVersion[0]))
+        pathLen = math.ceil(len(os.path.realpath(__file__)) - 10)
+        print('=-'*pathLen)
+        print('= Script Location: {} \t=-'.format(os.path.realpath(__file__)))
+        print('=-'*pathLen)
+        print()
+        sys.exit(0)
 
     def displayIntro(self):
         print('\033c')
@@ -73,12 +105,13 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                         |||             || ||      || ||
 ------------------------|||-------------||-||------||-||-------
                         |__>            || ||      || ||
-    
-    author: @th3J0kr
-    version: 0.1
-    https://www.github.com/th3J0kr/jtb_investigator                        
+        
+        Author: Th3J0kr
+        Version: 0.2
+        https://www.github.com/th3J0kr/jtb_investigator
 
         """)
+        
 
     def displayMainMenu(self):
         print()
@@ -91,6 +124,10 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
         
         if self.args:
             ready = False
+
+            if self.args.version:
+                self.printVersion()
+
             newInvestigation = Investigate()
             self.host = Host()
 
