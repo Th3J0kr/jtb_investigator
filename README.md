@@ -30,8 +30,10 @@ The setup is very simple:
 
 And you're good to go!
 
-### Optional Post Installation
+### Post Installation
 In order to do ASN Lookups the pyasn module requires a local ASN Database file located in `asn_db/` by default.
+
+If you want to update this file, which you should every so often, just run the `update.sh` script in the `asn_db/` directory.
 
 This database file is included in the repo but a new one can be downloaded by going into the `asn_db/` directory and running `pyasn_util_download.py --latest` then `pyasn_util_convert.py --single <Downloaded RIB File> ipasn_db_main.dat` (IMPORTANT: backup the old file first `mv ipasn_db_main.dat ipasn_db_main.dat.bak` and name the new one `ipasn_db_main.dat`). For best results this should be down fairly regularly.
 
@@ -117,6 +119,15 @@ Choose an option:
 
 `99`: Go back to main menu. Destroys current investigation
 
+### Tools
+
+In the `tools` folder there are more scripts to make this framework even more useful.
+
+`mass_investigator.py`:
+    * run script with `-i <ips or ranges to investigate>` or `-n hostnames to investigate` to run a batch scan
+        * All reports will be saved to `reports/csv/` directory
+    * Add `-f <format>` to specify format to save to. CSV is the default.
+
 ## To Do:
 
 This framework is still in the very early stages of development. There will likely be lots of bugs and errors so don't hesitate to contribute or open an issue on github.
@@ -149,7 +160,7 @@ It is written to be easily extended. All the options are classes in the `modules
 
 ### Tools
 1. Mass Investigator
-2. ASN DB updater
+2. ~~ASN DB updater~~
 
 
 
