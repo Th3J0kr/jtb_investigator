@@ -40,8 +40,8 @@ class Main:
                         pass
             f.close
 
-            if len(inReport) == 4:
-                self.host = Host(ip=inReport[0], domainName=inReport[1], ports=inReport[2], whoisInfo=inReport[3])
+            if len(inReport) == 5:
+                self.host = Host(ip=inReport[0], domainName=inReport[1], ports=inReport[2], whoisInfo=inReport[3], asnNum=inReport[4])
             else:
                 print('Wrong number of arguments in saved report')
                 print(inReport)

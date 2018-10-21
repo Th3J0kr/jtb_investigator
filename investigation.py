@@ -1,4 +1,4 @@
-from modules import Lookup, PortScan, Whois
+from modules import Lookup, PortScan, Whois, AsnLookup
 import os, io
 
 curDir = os.getcwd()
@@ -87,7 +87,8 @@ class Investigate:
         print('3: Lookup missing info')
         print('4: Nmap it')
         print('5: Get whois info')
-        print('6: Auto Investigate')
+        print('6: ASN Lookup')
+        print('7: Auto Investigate')
         print('96: Export Investigation')
         print('97: Change IP')
         print('98: Change Domain Name')
@@ -109,7 +110,8 @@ Version: 0.1
 `3`: Get either the IP or the Domain Name depending which you have already provided
 `4`: Get open ports on target host (Only scans 22-443 right now)
 `5`: Do a whois lookup and store import information to investigation report
-`6`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
+`6`: Get the ASN Number from the IP
+`7`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
 `96`: Save the investigation to a file in `./reports/<hostname or ip>_report.txt`
 `97`: Change IP of target
 `98`: Change Domain Name of target
@@ -141,6 +143,10 @@ Version: 0.1
                 else:
                     self.whoisLookup = Whois(hostName=host.domainName)
                 host.whoisInfo = self.whoisLookup.getInfo()
+        if host.ip:
+            asnLookup = AsnLookup()
+            host.asNum = asnLookup.lookup(host.ip)
+
         return host
 
         
@@ -180,6 +186,18 @@ Version: 0.1
                 self.host.whoisInfo = self.whoisLookup.getInfo()
 
             elif cmd == '6':
+                asnLookup = AsnLookup()
+                if not self.host.ip:
+                    lookup = Lookup()
+                    self.host = lookup.doLookup(self.host)
+                if not self.host.ip:
+                    print()
+                    print('Couldn\'t get IP to search!')
+                    print()
+                else:
+                    self.host.asnNum = asnLookup.lookup(self.host.ip)
+            
+            elif cmd == '7':
                 if not self.host.ip and not self.host.domainName:
                     print('I don\'t have enough info for that yet!')
                 else:
@@ -204,11 +222,12 @@ Version: 0.1
     
 
 class Host:
-    def __init__(self, ip=None, domainName=None, ports=None, whoisInfo=None):
+    def __init__(self, ip=None, domainName=None, ports=None, whoisInfo=None, asnNum=None):
         self.ip = ip
         self.domainName = domainName
         self.ports = ports
         self.whoisInfo = whoisInfo
+        self.asNum = asnNum
 
     def changeIP(self):
         

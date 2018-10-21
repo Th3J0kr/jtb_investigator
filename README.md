@@ -99,7 +99,7 @@ Choose an option:
 
 `3`: Get either the IP or the Domain Name depending which you have already provided
 
-`4`: Get open ports on target host (Only scans 22-443 right now)
+`4`: Get open ports on target host (Only scans 21-100,443-445,3389,8080,8081 right now)
 
 `5`: Do a whois lookup and store import information to investigation report
 

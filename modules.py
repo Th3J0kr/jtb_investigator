@@ -3,12 +3,28 @@ from datetime import datetime, timezone
 import nmap
 import whois
 import pyasn
+import os
 
 class AsnLookup:
     
-    def lookup(self, ip=None):
-        pass
-        
+    def lookup(self, ip):
+
+        if not os.path.isdir('asn_db'):
+            print()
+            print('No database folder found!')
+            print()
+        elif not os.path.isfile('asn_db/ipasn_db_main.dat'):
+            print()
+            print('No database file found!')
+            print()
+        else:
+            asndb = pyasn.pyasn('asn_db/ipasn_db_main.dat')
+            asnNum = asndb.lookup(ip)
+            print()
+            print('{} ASN number: {}'.format(ip, asnNum[0]))
+            print()
+            return asnNum[0]
+
 
 class Lookup:
     def doLookup(self, host):
