@@ -197,7 +197,7 @@ Version: 0.2
                 host.whoisInfo = self.whoisLookup.getInfo()
         if host.ip:
             asnLookup = AsnLookup()
-            host.asNum = asnLookup.lookup(host.ip)
+            host.asnNum = asnLookup.lookup(host.ip)
         self.printReport(host)
 
         return host
@@ -293,7 +293,7 @@ class Host:
         self.domainName = domainName
         self.ports = ports
         self.whoisInfo = whoisInfo
-        self.asNum = asnNum
+        self.asnNum = asnNum
 
     def changeIP(self):
         
