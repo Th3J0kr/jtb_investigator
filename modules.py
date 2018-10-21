@@ -2,11 +2,15 @@ import socket
 from datetime import datetime, timezone
 import nmap
 import whois
+import pyasn
+
+class AsnLookup:
+    
+    def lookup(self, ip=None):
+        pass
+        
 
 class Lookup:
-    def __init__(self):
-        pass
-
     def doLookup(self, host):
         if not host.ip:
             print('Looking up ip from domain {}'.format(host.domainName))
@@ -52,7 +56,7 @@ class PortScan:
             if sType == '-F':
                 self.nm.scan(hosts=ip, arguments=sType)
             else:
-                self.nm.scan(hosts=ip, arguments=sType, ports='1-100')
+                self.nm.scan(hosts=ip, arguments=sType, ports='21-100,443-445,3389,8080,8081')
             print('Done! Here\'s what I got:')
             self.parseResults()
             print('Open ports: {}'.format(self.ports))

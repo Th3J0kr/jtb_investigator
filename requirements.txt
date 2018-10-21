@@ -1,2 +1,3 @@
 python-nmap
 python-whois
+pyasn

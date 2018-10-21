@@ -30,6 +30,11 @@ The setup is very simple:
 
 And you're good to go!
 
+### Optional Post Installation
+In order to do ASN Lookups the pyasn module requires a local ASN Database file located in asn_db/ by default.
+
+This database file is included in the repo but a new one can be downloaded by going into the `asn_db/` directory and running `pyasn_util_download.py --latest` then `pyasn_util_convert.py --single <Downloaded RIB File> ipasn_db_main.dat` (IMPORTANT: backup the old file first `mv ipasn_db_main.dat ipasn_db_main.dat.bak` and name the new one `ipasn_db_main.dat`). For best results this should be down fairly regularly.
+
 ## Usage
 
 Using is very simple, that's the whole point. Not just to help us that do this manually everyday but also to make it easier for newbs to do these looks more quickly!
@@ -119,11 +124,17 @@ It is written to be easily extended. All the options are classes in the `modules
 1. ~~Add import investigation~~
 2. ~~Add help in menu~~
 3. Stability improvements
+4. Make import function more robust
+5. Optimize nmap
+    * Slim down ports
+    * Make async to avoid wait
 
 ### Feature additions
 
 1. Add multi-host capability
 2. Add more investigation modules
+    * ASN Lookup
+    * BGP
 3. Add different export formats
     * JSON
     * CSV
