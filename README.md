@@ -139,13 +139,17 @@ It is written to be easily extended. All the options are classes in the `modules
 1. Add multi-host capability
 2. Add more investigation modules
     * ~~ASN Lookup~~
-    * BGP
+    * TBD
 3. Add different export formats
     * ~~JSON~~
     * ~~CSV~~
 4. ~~Clean up auto-investigate~~
 5. ~~Add command line options to expedite startup~~
 6. Automate ASN database update
+
+### Tools
+1. Mass Investigator
+2. ASN DB updater
 
 
 
