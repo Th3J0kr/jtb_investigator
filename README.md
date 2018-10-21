@@ -67,7 +67,7 @@ After the super sweet ASCII art, you will be prompted to either start an investi
 
 Hit 1 and you will be asked for an IP or Domain Name. You will not be able to proceed until you provide one or the other to prevent issues down the line.
 
-Hit 2 and you will be asked if you want to import a report you have previously started. Import and Export to csv/txt is currently supported. JSON coming soon.
+Hit 2 and you will be asked if you want to import a report you have previously started. Import and Export to csv/txt/json is supported.
 
 ### Investigating
 
@@ -105,7 +105,7 @@ Choose an option:
 
 `6`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
 
-`96`: Export the report to a file. Currently support CSV and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
+`96`: Export the report to a file. Currently support CSV, JSON, and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
 
 `97`: Change IP of target
 
@@ -126,17 +126,17 @@ It is written to be easily extended. All the options are classes in the `modules
 3. ~~Stability improvements~~
 4. Make import function more robust
 5. Optimize nmap
-    * Slim down ports
+    * ~~Slim down ports~~
     * Make async to avoid wait
 
 ### Feature additions
 
 1. Add multi-host capability
 2. Add more investigation modules
-    * ASN Lookup
+    * ~~ASN Lookup~~
     * BGP
 3. Add different export formats
-    * JSON
+    * ~~JSON~~
     * ~~CSV~~
 4. ~~Clean up auto-investigate~~
 5. ~~Add command line options to expedite startup~~
