@@ -65,6 +65,10 @@ If you add the `-d` option along with `-i` or `-n` then JTB will start a new inv
 
 Run `./jtb.py -r <filepath to report>` to import a report and drop back into the investigation session
 
+#### Convert Time via CLI
+
+Run `./jtb.py -t <YYYY-mm-dd HH:MM:SS>` to convert UTC Time to Local Time. Use if your logs are in local time but you get alerts from a different tool in UTC
+
 ## General Guidance
 
 ### Starting an investigation
@@ -129,7 +133,7 @@ In the `tools` folder there are more scripts to make this framework even more us
 
         * All reports will be saved to `reports/csv/` directory
 
-    * Add `-f <format>` to specify format to save to. CSV is the default.
+    * Add `-f <format>` to specify format to save to (JSON, CSV, txt). CSV is the default.
 
     * Use `-r <file>` to run JTB against a file of ips or hostnames each on new lines. Files must start with `ips_` or `hostnames_` based on what is in it.
 
@@ -139,41 +143,13 @@ This framework is still in the very early stages of development. There will like
 
 It is written to be easily extended. All the options are classes in the `modules.py` file. To add a new module just add an option to the menu and write a new class in `modules.py`. Pull requests to extend features are welcome
 
-### General improvements
+## Examples:
 
-1. ~~Add import investigation~~
-2. ~~Add help in menu~~
-3. ~~Stability improvements~~
-4. ~~Make import function more robust~~
-5. Optimize nmap
-    * ~~Slim down ports~~
-    * Make async to avoid wait
-    * Add more scan types?
-
-### Feature additions
-
-1. Add multi-host capability
-2. Add more investigation modules
-    * ~~ASN Lookup~~
-    * TBD
-3. Add different export formats
-    * ~~JSON~~
-    * ~~CSV~~
-4. ~~Clean up auto-investigate~~
-5. ~~Add command line options to expedite startup~~
-6. Automate ASN database update
-
-### Tools
-1. ~~Mass Investigator~~
-2. ~~ASN DB updater~~
-
-
-
-
-
-
-
-
-
-
-
+Convert time: `./jtb.py -t '2018-10-16 21:22:23'`
+Start investigation with a hostname: `./jtb.py -n scanme.nmap.org -d`
+Start investigation with an IP: `./jtb.py -i 8.8.8.8 -d`
+Get all information you can about hostname: `./jtb.py -n scanme.nmap.org`
+Get all information you can about hostname using only passive techniques: `./jtb.py -n scanme.nmap.org -p`
+Get all information you can about hostname and send to csv report (avoids the prompt after the investigation): `./jtb.py -n scanme.nmap.org -f csv`
+Run batch investigation of hostnames in hostnames_sus.txt: `./tools/mass_investigator.py -r hostnames_sus.txt`
+Run batch investigation of hostnames in hostnames_sus.txt and export report in json (csv is default): `./tools/mass_investigator.py -r hostnames_sus.txt -f json`

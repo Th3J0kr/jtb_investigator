@@ -6,6 +6,31 @@ import pyasn
 import os
 import subprocess
 
+class UtcToLocal:
+    def __init__(self, time=None):
+        self.time = time
+
+    def convertTime(self, time):
+        print()
+        print('Converting {} from UTC to Local Time...'.format(time))
+        time = time + ' UTC+0000'
+        fmt = "%Y-%m-%d %H:%M:%S %Z%z"
+        timeObj = datetime.strptime(time, fmt)
+        return timeObj.replace(tzinfo=timezone.utc).astimezone(tz=None)
+
+    def convPrompt(self):
+        print('What time did the event occur in UTC? (e.g. 2018-10-16 21:22:23)')
+        time = input('> ')   
+        if time:
+            try:
+                convertedTime = self.convertTime(time)
+                return convertedTime
+            except:
+                print('I didn\'t understand that time')
+                return
+        else:
+            return
+
 class AsnLookup:
     
     def lookup(self, ip):

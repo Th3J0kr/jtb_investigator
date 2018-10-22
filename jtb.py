@@ -2,6 +2,7 @@
 
 import os, sys, argparse, math, csv, json
 from investigation import Investigate, Host
+from modules import UtcToLocal
 
 class Main:
     
@@ -17,6 +18,7 @@ class Main:
         parser.add_argument('-d', '--disable', action='store_true', help='Disable auto investigate when starting with option')
         parser.add_argument('-f', '--format', type=str, help="Format to export to. Avoids prompt for CLI auto investigate.")
         parser.add_argument('-p', '--passive', action='store_true', help="Passive recon only. Doesn't run nmap or any scans that interact with the target itself.")
+        parser.add_argument('-t', '--time', type=str, help="Convert time from UTC to Local Time and quit. (format: 2018-10-16 21:22:23)")
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
 
@@ -155,6 +157,15 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 newInvestigation.printReport(self.host)
                 newInvestigation = Investigate(self.host)
                 newInvestigation.investigation()
+            elif self.args.time:
+                timeConv = UtcToLocal()
+                try:
+                    print('{} in Local time is: {}'.format(self.args.time, timeConv.convertTime(self.args.time)))
+                    print()
+                except:
+                    print('Unable to convert time! Check format matches 2018-10-16 21:22:23')
+                    print()
+                sys.exit(0)
             else:
                 print('Not useful arguments!')
             #print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))

@@ -1,4 +1,4 @@
-from modules import Lookup, PortScan, Whois, AsnLookup
+from modules import Lookup, PortScan, Whois, AsnLookup, UtcToLocal
 import os, io, csv, json
 
 curDir = os.getcwd()
@@ -137,6 +137,7 @@ class Investigate:
         print('5: Get whois info')
         print('6: ASN Lookup')
         print('7: Auto Investigate')
+        print('95: Convert time from UTC to Local Time')
         print('96: Export Investigation')
         print('97: Change IP')
         print('98: Change Domain Name')
@@ -154,7 +155,7 @@ Version: 1.0
 ------
 ##Usage##
 
-`0`: Display help information (not added yet)
+`0`: Display help information
 `1`: Print info about the host (IP and Domain)
 `2`: Print all the information gathered so far.
 `3`: Get either the IP or the Domain Name depending which you have already provided
@@ -162,10 +163,22 @@ Version: 1.0
 `5`: Do a whois lookup and store import information to investigation report
 `6`: Get the ASN Number from the IP
 `7`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
-`96`: Export the report to a file. Currently support CSV and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
+`95`: Convert time from UTC to Local Time (Useful for splunk searches if alert is in UTC)
+`96`: Export the report to a file. Currently support CSV, JSON and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
 `97`: Change IP of target
 `98`: Change Domain Name of target
 `99`: Go back to main menu. Destroys current investigation
+
+##Examples##
+
+Convert time: `./jtb.py -t '2018-10-16 21:22:23'`
+Start investigation with a hostname: `./jtb.py -n scanme.nmap.org -d`
+Start investigation with an IP: `./jtb.py -i 8.8.8.8 -d`
+Get all information you can about hostname: `./jtb.py -n scanme.nmap.org`
+Get all information you can about hostname using only passive techniques: `./jtb.py -n scanme.nmap.org -p`
+Get all information you can about hostname and send to csv report (avoids the prompt after the investigation): `./jtb.py -n scanme.nmap.org -f csv`
+Run batch investigation of hostnames in hostnames_sus.txt: `./tools/mass_investigator.py -r hostnames_sus.txt`
+Run batch investigation of hostnames in hostnames_sus.txt and export report in json (csv is default): `./tools/mass_investigator.py -r hostnames_sus.txt -f json`
         """)
 
     def autoSherlock(self, host=None, nmap=True):
@@ -286,6 +299,14 @@ Version: 1.0
                             self.autoSherlock(self.host, False)
                 else:
                     print('You need to add an IP or hostname first!')
+
+            elif cmd == '95':
+                tzConverter = UtcToLocal()
+                localTime = tzConverter.convPrompt()
+                if localTime:
+                    print('The event occured at {}'.format(localTime))
+                else:
+                    print('Unable to convert time!')
 
             elif cmd == '96':
                 if self.host.ip or self.host.domainName:
