@@ -146,10 +146,17 @@ It is written to be easily extended. All the options are classes in the `modules
 ## Examples:
 
 Convert time: `./jtb.py -t '2018-10-16 21:22:23'`
+
 Start investigation with a hostname: `./jtb.py -n scanme.nmap.org -d`
+
 Start investigation with an IP: `./jtb.py -i 8.8.8.8 -d`
+
 Get all information you can about hostname: `./jtb.py -n scanme.nmap.org`
+
 Get all information you can about hostname using only passive techniques: `./jtb.py -n scanme.nmap.org -p`
+
 Get all information you can about hostname and send to csv report (avoids the prompt after the investigation): `./jtb.py -n scanme.nmap.org -f csv`
+
 Run batch investigation of hostnames in hostnames_sus.txt: `./tools/mass_investigator.py -r hostnames_sus.txt`
+
 Run batch investigation of hostnames in hostnames_sus.txt and export report in json (csv is default): `./tools/mass_investigator.py -r hostnames_sus.txt -f json`
