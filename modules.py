@@ -108,7 +108,7 @@ class PortScan:
             if sType == '-F':
                 self.nm.scan(hosts=ip, arguments=sType)
             else:
-                self.nm.scan(hosts=ip, arguments=sType, ports='21-100,443-445,3389,8080,8081')
+                self.nm.scan(hosts=ip, arguments=sType, ports='21-445,3389,8080,8081')
             print('Done! Here\'s what I got:')
             self.parseResults()
             print('Open ports: {}'.format(self.ports))
