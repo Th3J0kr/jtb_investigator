@@ -5,3 +5,4 @@ test.txt
 csv/*
 json/*
 txt/*
+.gitignore
