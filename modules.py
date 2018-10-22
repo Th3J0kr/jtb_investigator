@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import nmap
 import whois
 import pyasn
+from spam_lists import SPAMHAUS_DBL
 import os
 import subprocess
 

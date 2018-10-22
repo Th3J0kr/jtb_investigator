@@ -132,7 +132,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
         print('99: Quit')
 
     def run(self):
-        
+        self.displayIntro()
         if self.args:
             ready = False
 
@@ -185,6 +185,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 else:
                     newInvestigation.exportReport(self.host)
                 sys.exit(0)
+                
             
         while True:
             self.displayIntro()
