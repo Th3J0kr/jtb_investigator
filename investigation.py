@@ -170,7 +170,7 @@ Version: 1.0
 `99`: Go back to main menu. Destroys current investigation
         """)
 
-    def autoSherlock(self, host=None):
+    def autoSherlock(self, host=None, nmap=True):
         print()
         print('Let me see what I can get for you...')
         print()
@@ -184,12 +184,16 @@ Version: 1.0
         elif not host.ip:
             host = lookup.doLookup(host)
 
-        if not host.ports:
-            sType = 'F'
-            scan = PortScan(host.ip, sType)
-            resultL = scan.runScan(host.ip, sType)
-            host.ports = resultL[0]
-            host.status = resultL[1]
+        if nmap:
+            if not host.ports:
+                sType = 'F'
+                scan = PortScan(host.ip, sType)
+                resultL = scan.runScan(host.ip, sType)
+                host.ports = resultL[0]
+                host.status = resultL[1]
+        else:
+            print()
+            print('Run in passive mode. Skipping nmap scan!')
 
         if not host.whoisInfo:
                 if not host.domainName:

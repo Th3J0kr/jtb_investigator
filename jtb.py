@@ -16,6 +16,7 @@ class Main:
         parser.add_argument('-r', '--report', type=str, help='Report to import')
         parser.add_argument('-d', '--disable', action='store_true', help='Disable auto investigate when starting with option')
         parser.add_argument('-f', '--format', type=str, help="Format to export to. Avoids prompt for CLI auto investigate.")
+        parser.add_argument('-p', '--passive', action='store_true', help="Passive recon only. Doesn't run nmap or any scans that interact with the target itself.")
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
 
@@ -163,7 +164,10 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 newInvestigation.printReport(self.host)
                 newInvestigation.investigation()
             if ready:
-                self.host = newInvestigation.autoSherlock(self.host)
+                if self.args.passive:
+                    self.host = newInvestigation.autoSherlock(self.host, False)
+                else:
+                    self.host = newInvestigation.autoSherlock(self.host)
                 newInvestigation.printReport(self.host)
                 if self.args.format:
                     newInvestigation.exportReport(self.host, self.args.format)
