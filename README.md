@@ -143,6 +143,10 @@ This framework is still in the very early stages of development. There will like
 
 It is written to be easily extended. All the options are classes in the `modules.py` file. To add a new module just add an option to the menu and write a new class in `modules.py`. Pull requests to extend features are welcome
 
+1. Add blacklist lookup
+
+2. Make tools avaliable from the menu
+
 ## Examples:
 
 Convert time: `./jtb.py -t '2018-10-16 21:22:23'`
