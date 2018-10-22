@@ -71,7 +71,7 @@ class Investigate:
                     f.write('{} : {}\n'.format(prop, val))
         elif rFormat == 'csv':
             with open(reportPath, 'w', newline='\n') as f:
-                csvWriter = csv.writer(f, delimiter=',', quotechar='\'', quoting=csv.QUOTE_ALL)
+                csvWriter = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                 props = []
                 vals = []
                 for prop, val in vars(host).items():

@@ -1,2 +1,0 @@
-'ip','domainName','status','ports','whoisInfo','asnNum','asnInfo'
-'64.233.176.139','google.com','up','[80, 443]','{''domain_name'': [''GOOGLE.COM'', ''google.com''], ''name'': None, ''organization'': ''Google LLC'', ''address'': None, ''state'': ''CA'', ''city'': None}','15169','{''ISP'': ''GOOGLE - Google LLC, US'', ''Country'': ''US'', ''Registry'': ''arin'', ''Date Registered'': ''2000-03-30''}'
