@@ -8,6 +8,7 @@ def parse_args():
         parser.add_argument('-n', '--hostname', type=str, help ='Hostnames to investigate separated by spaces (enclose in quotes)')
         parser.add_argument('-f', '--format', type=str, help='Format to export file to (csv (default), json, txt)')
         parser.add_argument('-r', '--read', type=str, help='File to read ips or hostnames from. (start filename with ips or hostnames e.g. hostnames_10282018.txt)')
+        parser.add_argument('-c', '--combine', action='store_true', help='Combine reports into 1 report')
         args = parser.parse_args()
         return args
 

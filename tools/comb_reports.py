@@ -4,6 +4,7 @@ import os, sys, glob, json, csv, io, argparse, time
 def parse_args():
     parser = argparse.ArgumentParser(description='Investigate from the command line')
     parser.add_argument('-r', '--remove', action='store_true', help = 'IPs or range to investigate separated by spaces (enclose in quotes)')
+    parser.add_argument('-n', '--name', type=str, help='Filename of combined report. (e.g. investigation1) (Will still be in reports/<format>/<filename>.<filetype>)')
     args = parser.parse_args()
     return args
 
@@ -22,11 +23,15 @@ reportDirs = os.listdir('.')
 print('[Combing Reports]')
 
 args = parse_args()
-
+if args.remove:
+    remove = True
 for d in reportDirs:
     os.chdir(d)
     print('[*] Entering: {}'.format(os.getcwd()))
-    combinedFileName = d + '_combined.' + d
+    if args.name:
+        combinedFileName = args.name + '_combined.' + d
+    else:
+        combinedFileName = d + '_combined.' + d
     if not os.path.isfile(combinedFileName):
         if d == 'csv':
             print('[*] Initializing csv file...')
@@ -46,7 +51,7 @@ for d in reportDirs:
             fh.close()
     with open(combinedFileName, 'a', newline='\n') as fc:
         for f in glob.glob("*." + d):
-            if f != combinedFileName:
+            if '_combined' not in f:
                 print('[*] Combining report {}...'.format(f))
                 with open(f, 'r') as fo:
                     if d == 'txt':
@@ -72,7 +77,8 @@ for d in reportDirs:
                         report = fo.read()
                         fc.write(report + '\n\n')
                 fo.close()
-                if args.remove:
+                print('[*] Saved reports to {}'.format(combinedFileName))
+                if remove:
                     print('[!] Removing report {}'.format(f))
                     os.remove(f)
     fc.close()
