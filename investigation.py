@@ -12,7 +12,6 @@ class Investigate:
 
     def hostInfo(self):
         print('----------------------------------------------------')
-
         print()
         print('Current host info: ')
         print('IP: {}'.format(self.host.ip))
@@ -27,7 +26,6 @@ class Investigate:
         
         print()
         print('----------------------------------------------------')
-        print()
         for prop, val in vars(host).items():
             print('{} : {}'.format(prop, val))
         print('----------------------------------------------------')
@@ -272,11 +270,20 @@ Version: 1.0
                     print('I need an IP first!')
             
             elif cmd == '7':
+                choices = ['A', 'P']
+                choice = ""
+                while choice.upper() not in choices:
+                    print('Do you want to run AutoSherlock in (A)ctive or (P)assive mode? (Passive skips modules that directly touch targed i.e. nmap)')
+                    choice = input('> ')
+                
                 if self.host:
                     if not self.host.ip and not self.host.domainName:
                         print('I don\'t have enough info for that yet!')
                     else:
-                        self.autoSherlock(self.host)
+                        if choice == 'A':
+                            self.autoSherlock(self.host)
+                        else:
+                            self.autoSherlock(self.host, False)
                 else:
                     print('You need to add an IP or hostname first!')
 
