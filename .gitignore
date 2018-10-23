@@ -6,3 +6,5 @@ csv/*
 json/*
 txt/*
 .gitignore
+*.bak
+*.bz2

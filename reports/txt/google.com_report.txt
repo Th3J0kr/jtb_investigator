@@ -1,0 +1,8 @@
+ip : 172.217.0.78
+domainName : google.com
+status : None
+ports : None
+whoisInfo : {'domain_name': ['GOOGLE.COM', 'google.com'], 'name': None, 'organization': 'Google LLC', 'address': None, 'state': 'CA', 'city': None}
+asnNum : 15169
+asnInfo : {'ISP': 'GOOGLE - Google LLC, US', 'Country': 'US', 'Registry': 'arin', 'Date Registered': '2000-03-30'}
+blackListed : False

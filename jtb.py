@@ -22,6 +22,7 @@ class Main:
         parser.add_argument('-p', '--passive', action='store_true', help="Passive recon only. Doesn't run nmap or any scans that interact with the target itself.")
         parser.add_argument('-t', '--time', type=str, help="Convert time from UTC to Local Time and quit. (format: 2018-10-16 21:22:23)")
         parser.add_argument('-m', '--mass', type=str, help='Filename of hostnames or ips to investigate. Must start with "hostnames_" "ips_"')
+        parser.add_argument('-c', '--combine', type=str, help='Name to give file after combine (<filename>_combined.<format>')
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
 
@@ -183,19 +184,40 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 hostL = massInvestigator.getHosts(fileName)
                 if 'hostnames_' in fileName:
                     if self.args.format:
-                        massInvestigator.checkHosts(hostL=hostL, fFormat=self.args.format)
+                        if self.args.passive:
+                            massInvestigator.checkHosts(hostL=hostL, fFormat=self.args.format, nmap=False)
+                        else:
+                            massInvestigator.checkHosts(hostL=hostL, fFormat=self.args.format)
                     else:
-                        massInvestigator.checkHosts(ipL=hostL)
+                        if self.args.passive:
+                            massInvestigator.checkHosts(hostL=hostL, nmap=False)
+                        else:
+                            massInvestigator.checkHosts(hostL=hostL)
                 elif 'ips_' in fileName:
                     if self.args.format:
-                        massInvestigator.checkHosts(ipL=hostL, fFormat=self.args.format)
+                        if self.args.passive:
+                            massInvestigator.checkHosts(ipL=hostL, fFormat=self.args.format, nmap=False)
+                        else:
+                            massInvestigator.checkHosts(ipL=hostL, fFormat=self.args.format)
                     else:
-                        massInvestigator.checkHosts(ipL=hostL)
+                        if self.args.passive:
+                            massInvestigator.checkHosts(ipL=hostL, nmap=False)
+                        else:
+                            massInvestigator.checkHosts(ipL=hostL)
 
                 print('Done!')
                 sys.exit(0)
-            else:
-                print('Not useful arguments!')
+            
+            elif self.args.combine:
+                name = self.args.combine
+                while name == "":
+                    print('What do you want the group name for these reports to be? ("<name>_hostnames.<format>"')
+                    name = input("> ")
+                combReport = tools.comb_reports.CombineReports()
+                combReport.main(name=name)
+                print('Done!')
+                print()
+                sys.exit(0)
             #print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
             if self.args.disable:
                 ready = False

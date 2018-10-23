@@ -35,14 +35,14 @@ class MassInvestigator:
             print('No file provided!')
             return
         
-    def checkHosts(self, ipL=None, hostL=None, fFormat=None):
+    def checkHosts(self, ipL=None, hostL=None, fFormat=None, nmap=True):
         if ipL:
             print('Got IPs, running investigations.')
             for ip in ipL:
                 host = investigation.Host()
                 host.ip = ip
                 newInvestigation = investigation.Investigate()
-                host = newInvestigation.autoSherlock(host)
+                host = newInvestigation.autoSherlock(host, nmap=nmap)
                 if fFormat:
                     newInvestigation.exportReport(host, fFormat)
                 else:
@@ -53,7 +53,7 @@ class MassInvestigator:
                 host = investigation.Host()
                 host.domainName = inHost
                 newInvestigation = investigation.Investigate()
-                host = newInvestigation.autoSherlock(host)
+                host = newInvestigation.autoSherlock(host, nmap=nmap)
                 if fFormat:
                     newInvestigation.exportReport(host, fFormat)
                 else:
