@@ -169,17 +169,17 @@ Version: 1.0
 `98`: Change Domain Name of target
 `99`: Go back to main menu. Destroys current investigation
 
-##Examples##
-
+## Examples:
 Convert time: `./jtb.py -t '2018-10-16 21:22:23'`
 Start investigation with a hostname: `./jtb.py -n scanme.nmap.org -d`
 Start investigation with an IP: `./jtb.py -i 8.8.8.8 -d`
 Get all information you can about hostname: `./jtb.py -n scanme.nmap.org`
 Get all information you can about hostname using only passive techniques: `./jtb.py -n scanme.nmap.org -p`
 Get all information you can about hostname and send to csv report (avoids the prompt after the investigation): `./jtb.py -n scanme.nmap.org -f csv`
-Run batch investigation of hostnames in hostnames_sus.txt: `./tools/mass_investigator.py -r hostnames_sus.txt`
-Run batch investigation of hostnames in hostnames_sus.txt and export report in json (csv is default): `./tools/mass_investigator.py -r hostnames_sus.txt -f json`
-        """)
+Combine all reports currently in reports (exluding already combined files) into `new_combined.<format>`: `./jtb.py -c new`
+Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default): `./jtb.py -m hostnames_test.txt -p -f json`
+Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default) then combine files into `test1_combine.json` (warning also combines other reports): `./jtb.py -m hostnames_test.txt -p -f json -c test1`
+""")
 
     def autoSherlock(self, host=None, nmap=True):
         print()

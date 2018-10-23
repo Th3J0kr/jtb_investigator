@@ -1,0 +1,8 @@
+{"facebook.com": {"ip": "157.240.2.35", "domainName": "facebook.com", "status": null, "ports": null, "whoisInfo": {"domain_name": "FACEBOOK.COM", "name": "Domain Admin", "organization": "Facebook, Inc.", "address": "1601 Willow Rd", "state": "CA", "city": "Menlo Park"}, "asnNum": 32934, "asnInfo": {"ISP": "FACEBOOK - Facebook, Inc., US", "Country": "US", "Registry": "arin", "Date Registered": "2004-08-24"}, "blackListed": false}}
+
+{"scanme.nmap.org": {"ip": "45.33.32.156", "domainName": "scanme.nmap.org", "status": null, "ports": null, "whoisInfo": {"domain_name": "NMAP.ORG", "name": null, "organization": "Insecure.Com LLC", "address": null, "state": "WA", "city": null}, "asnNum": 63949, "asnInfo": {"ISP": "LINODE-AP Linode, LLC, US", "Country": "US", "Registry": "apnic", "Date Registered": "2015-02-16"}, "blackListed": false}}
+
+{"google.com": {"ip": "172.217.3.238", "domainName": "google.com", "status": null, "ports": null, "whoisInfo": {"domain_name": ["GOOGLE.COM", "google.com"], "name": null, "organization": "Google LLC", "address": null, "state": "CA", "city": null}, "asnNum": 15169, "asnInfo": {"ISP": "GOOGLE - Google LLC, US", "Country": "US", "Registry": "arin", "Date Registered": "2000-03-30"}, "blackListed": false}}
+
+{"dbltest.com": {"ip": "217.70.184.38", "domainName": "dbltest.com", "status": null, "ports": null, "whoisInfo": {"domain_name": ["DBLTEST.COM", "dbltest.com"], "name": "REDACTED FOR PRIVACY", "organization": "Spamhaus Logistics Corp.", "address": "REDACTED FOR PRIVACY", "state": null, "city": "REDACTED FOR PRIVACY"}, "asnNum": 29169, "asnInfo": {"ISP": "GANDI-AS Domain name registrar - http://www.gandi.net, FR", "Country": "FR", "Registry": "ripencc", "Date Registered": "2003-06-20"}, "blackListed": true}}
+

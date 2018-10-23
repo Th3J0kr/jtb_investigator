@@ -206,9 +206,9 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                             massInvestigator.checkHosts(ipL=hostL)
 
                 print('Done!')
-                sys.exit(0)
+                
             
-            elif self.args.combine:
+            if self.args.combine:
                 name = self.args.combine
                 while name == "":
                     print('What do you want the group name for these reports to be? ("<name>_hostnames.<format>"')

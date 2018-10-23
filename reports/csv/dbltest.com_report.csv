@@ -1,2 +1,0 @@
-ip,domainName,status,ports,whoisInfo,asnNum,asnInfo,blackListed
-217.70.184.38,dbltest.com,,,"{'domain_name': ['DBLTEST.COM', 'dbltest.com'], 'name': 'REDACTED FOR PRIVACY', 'organization': 'Spamhaus Logistics Corp.', 'address': 'REDACTED FOR PRIVACY', 'state': None, 'city': 'REDACTED FOR PRIVACY'}",29169,"{'ISP': 'GANDI-AS Domain name registrar - http://www.gandi.net, FR', 'Country': 'FR', 'Registry': 'ripencc', 'Date Registered': '2003-06-20'}",True

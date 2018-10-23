@@ -1,8 +1,0 @@
-ip : 157.240.18.35
-domainName : facebook.com
-status : None
-ports : None
-whoisInfo : {'domain_name': 'FACEBOOK.COM', 'name': 'Domain Admin', 'organization': 'Facebook, Inc.', 'address': '1601 Willow Rd', 'state': 'CA', 'city': 'Menlo Park'}
-asnNum : 32934
-asnInfo : {'ISP': 'FACEBOOK - Facebook, Inc., US', 'Country': 'US', 'Registry': 'arin', 'Date Registered': '2004-08-24'}
-blackListed : False

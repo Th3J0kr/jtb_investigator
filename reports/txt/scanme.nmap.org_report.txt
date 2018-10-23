@@ -1,8 +1,0 @@
-ip : 45.33.32.156
-domainName : scanme.nmap.org
-status : None
-ports : None
-whoisInfo : {'domain_name': 'NMAP.ORG', 'name': None, 'organization': 'Insecure.Com LLC', 'address': None, 'state': 'WA', 'city': None}
-asnNum : 63949
-asnInfo : {'ISP': 'LINODE-AP Linode, LLC, US', 'Country': 'US', 'Registry': 'apnic', 'Date Registered': '2015-02-16'}
-blackListed : False

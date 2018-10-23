@@ -11,7 +11,7 @@ JTB (Just the basics) Investigator is a simple framework to ease the monotonous 
 
 Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
 
-Version: 1.0
+Version: 2.0
 
 ------
 
@@ -41,13 +41,38 @@ This database file is included in the repo but a new one can be downloaded by go
 
 Using is very simple, that's the whole point. Not just to help us that do this manually everyday but also to make it easier for newbs to do these looks more quickly!
 
-### Menu Driven
-
-Just `cd` into the `jtb_investigator` directory and run `jtb.py` with `./jtb.py` or `python3 jtb.py`
-
-Once running just follow the prompts!
-
 ### Command line usage
+
+```
+usage: jtb.py [-h] [-i IP] [-n HOSTNAME] [-r REPORT] [-d] [-f FORMAT] [-p]
+              [-t TIME] [-m MASS] [-c COMBINE] [-v]
+
+Investigate from the command line
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IP, --ip IP        IP to investigate
+  -n HOSTNAME, --hostname HOSTNAME
+                        Hostname to investigate
+  -r REPORT, --report REPORT
+                        Report to import
+  -d, --disable         Disable auto investigate when starting with option
+  -f FORMAT, --format FORMAT
+                        Format to export to. Avoids prompt for CLI auto
+                        investigate.
+  -p, --passive         Passive recon only. Doesn't run nmap or any scans that
+                        interact with the target itself.
+  -t TIME, --time TIME  Convert time from UTC to Local Time and quit. (format:
+                        2018-10-16 21:22:23)
+  -m MASS, --mass MASS  Filename of hostnames or ips to investigate. Must
+                        start with "hostnames_" "ips_"
+  -c COMBINE, --combine COMBINE
+                        Name to give file after combine
+                        (<filename>_combined.<format>
+  -v, --version         Print JTB version currently installed
+```
+
+There is various mixing and matching that is supported. While I'm too lazy to document all possible combinations, check out the examples at the bottom for more help.
 
 #### Auto Investigate via CLI
 
@@ -55,7 +80,11 @@ Using the command line makes the lookups even faster. After I added this feature
 
 Anyway it's easy to automate it all with: `./jtb.py -i <ip to investigate>` or `python3 jtb.py -n <hostname to investigate>`
 
-This will spit the report into the `reports/` directory in `<hostname or ip>_report.txt`.
+This will spit the report(s) into the `reports/` directory in `<hostname or ip>_report.txt`.
+
+Or if you have a file of hostnames or ips (must be saved as "hostnames_*.txt"): `./jtb.py -m <filename>`
+
+This will spit the report(s) into the `reports/` directory in `<hostname or ip>_report.csv`. Or you can specify the format with `-f <format>` at the end. 
 
 #### Start an investigation with IP and/or hostname from CLI
 
@@ -69,37 +98,54 @@ Run `./jtb.py -r <filepath to report>` to import a report and drop back into the
 
 Run `./jtb.py -t <YYYY-mm-dd HH:MM:SS>` to convert UTC Time to Local Time. Use if your logs are in local time but you get alerts from a different tool in UTC
 
-## General Guidance
+#### Combine exisitng reports into 1 file via cli
 
-### Starting an investigation
+Run `./jtb.py -c <name>` where name will be the beginning of the new combined file `<name>_combined.<format>`
 
-After the super sweet ASCII art, you will be prompted to either start an investigation (1) or quit (99). This menu will be have more options in the future such as import an investigation but it's just simple right now.
+### Menu Driven
 
-Hit 1 and you will be asked for an IP or Domain Name. You will not be able to proceed until you provide one or the other to prevent issues down the line.
+#### Main Menu
 
-Hit 2 and you will be asked if you want to import a report you have previously started. Import and Export to csv/txt/json is supported.
+Just `cd` into the `jtb_investigator` directory and run `jtb.py` with `./jtb.py` or `python3 jtb.py`
 
-### Investigating
+You will be greeted with:
+
+```
+Choose an option: 
+1: Open a new investigation
+2: Import a previous investigation
+3: Mass Investigator of file (file must start with "hostnames_" or "ip_"
+4: Combine current reports into 1 file for each format
+99: Quit
+> 
+```
+
+This just gives a menu driven UI to the command line options. Choose an option to get started.
+
+#### Investigation Menu
 
 Once you have started your investigation of an IP or Domain Name you will be presented with a menu of options:
 
 ```
-Choose an option:
+Choose an option: 
 0: Display help
 1: Print working host info
 2: Print Investigation report
 3: Lookup missing info
 4: Nmap it
 5: Get whois info
-6: Auto Investigate
+6: ASN Lookup
+7: Blacklist check
+8: Auto Investigate
+95: Convert time from UTC to Local Time
 96: Export Investigation
 97: Change IP
 98: Change Domain Name
 99: Back to main menu (destroys current investigation)
->
+> 
 ```
 
-### Menu Options
+#### Menu Options
 
 `0`: Display help information
 
@@ -113,7 +159,13 @@ Choose an option:
 
 `5`: Do a whois lookup and store import information to investigation report
 
-`6`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
+`6`:  Get ASN information on the target host.
+
+`7`: Check if hostname is in SPAMHAUS DBL, SPAMHAUS ZEN or SURBL
+
+`8`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
+
+`95`: Convert time from UTC to Local Time (Useful for splunk searches if alert is in UTC)
 
 `96`: Export the report to a file. Currently support CSV, JSON, and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
 
@@ -123,29 +175,11 @@ Choose an option:
 
 `99`: Go back to main menu. Destroys current investigation
 
-### Tools
-
-In the `tools` folder there are more scripts to make this framework even more useful.
-
-1. `mass_investigator.py`:
-
-    * run script with `-i <ips or ranges to investigate>` or `-n hostnames to investigate` to run a batch scan
-
-        * All reports will be saved to `reports/csv/` directory
-
-    * Add `-f <format>` to specify format to save to (JSON, CSV, txt). CSV is the default.
-
-    * Use `-r <file>` to run JTB against a file of ips or hostnames each on new lines. Files must start with `ips_` or `hostnames_` based on what is in it.
-
 ## To Do:
 
 This framework is still in the very early stages of development. There will likely be lots of bugs and errors so don't hesitate to contribute or open an issue on github.
 
 It is written to be easily extended. All the options are classes in the `modules.py` file. To add a new module just add an option to the menu and write a new class in `modules.py`. Pull requests to extend features are welcome
-
-1. ~~Add blacklist lookup~~
-
-2. ~~Make tools avaliable from the menu and cli~~
 
 ## Examples:
 
@@ -161,6 +195,8 @@ Get all information you can about hostname using only passive techniques: `./jtb
 
 Get all information you can about hostname and send to csv report (avoids the prompt after the investigation): `./jtb.py -n scanme.nmap.org -f csv`
 
-Run batch investigation of hostnames in hostnames_sus.txt: `./tools/mass_investigator.py -r hostnames_sus.txt`
+Combine all reports currently in reports (exluding already combined files) into `new_combined.<format>`: `./jtb.py -c new`
 
-Run batch investigation of hostnames in hostnames_sus.txt and export report in json (csv is default): `./tools/mass_investigator.py -r hostnames_sus.txt -f json`
+Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default): `./jtb.py -m hostnames_test.txt -p -f json`
+
+Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default) then combine files into `test1_combine.json` (warning also combines other reports): `./jtb.py -m hostnames_test.txt -p -f json -c test1`
