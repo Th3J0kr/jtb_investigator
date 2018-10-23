@@ -1,7 +1,5 @@
-from modules import Lookup, PortScan, Whois, AsnLookup, UtcToLocal
+from modules import Lookup, PortScan, Whois, AsnLookup, UtcToLocal, BlackListCheck
 import os, io, csv, json
-
-curDir = os.getcwd()
 
 class Investigate:
     
@@ -36,7 +34,7 @@ class Investigate:
             return
 
         print('Exporting report...')
-
+        curDir = os.getcwd()
         reportDir = curDir + '/reports'
         if not os.path.isdir(reportDir):
             os.mkdir(reportDir)
@@ -136,7 +134,8 @@ class Investigate:
         print('4: Nmap it')
         print('5: Get whois info')
         print('6: ASN Lookup')
-        print('7: Auto Investigate')
+        print('7: Blacklist check')
+        print('8: Auto Investigate')
         print('95: Convert time from UTC to Local Time')
         print('96: Export Investigation')
         print('97: Change IP')
@@ -162,7 +161,8 @@ Version: 1.0
 `4`: Get open ports on target host (Only scans 22-443 right now)
 `5`: Do a whois lookup and store import information to investigation report
 `6`: Get the ASN Number from the IP
-`7`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
+`7`: Check if hostname is in SPAMHAUS DBL, SPAMHAUS ZEN or SURBL
+`8`: Let the Investigator collect as much information for you as possible (Runs all modules against what it has)
 `95`: Convert time from UTC to Local Time (Useful for splunk searches if alert is in UTC)
 `96`: Export the report to a file. Currently support CSV, JSON and txt. Saved to `reports/<csv/txt>/<hostname/ip>_report.<file type>`
 `97`: Change IP of target
@@ -218,7 +218,10 @@ Run batch investigation of hostnames in hostnames_sus.txt and export report in j
             if host.asnNum:
                 host.asnInfo = asnLookup.getDetails(host.asnNum)
 
-        #self.printReport(host)
+        if host.domainName:
+            print('Checking blacklists...')
+            blackListCheck = BlackListCheck()
+            host.blackListed = blackListCheck.singleLookup(host.domainName)
 
         return host
 
@@ -283,6 +286,15 @@ Run batch investigation of hostnames in hostnames_sus.txt and export report in j
                     print('I need an IP first!')
             
             elif cmd == '7':
+                blackListCheck = BlackListCheck()
+                if self.host.domainName:
+                    self.host.blackListed = blackListCheck.singleLookup(self.host.domainName)
+                else:
+                    print()
+                    print('You need a hostname/domain name first!')
+                
+            
+            elif cmd == '8':
                 choices = ['A', 'P']
                 choice = ""
                 while choice.upper() not in choices:
@@ -330,7 +342,7 @@ Run batch investigation of hostnames in hostnames_sus.txt and export report in j
     
 
 class Host:
-    def __init__(self, ip=None, domainName=None, status=None, ports=None, whoisInfo=None, asnNum=None, asnInfo=None):
+    def __init__(self, ip=None, domainName=None, status=None, ports=None, whoisInfo=None, asnNum=None, asnInfo=None, blackListed=None):
         self.ip = ip
         self.domainName = domainName
         self.status = status
@@ -338,6 +350,7 @@ class Host:
         self.whoisInfo = whoisInfo
         self.asnNum = asnNum
         self.asnInfo = asnInfo
+        self.blackListed = blackListed
 
     def changeIP(self):
         

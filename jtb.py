@@ -3,6 +3,8 @@
 import os, sys, argparse, math, csv, json
 from investigation import Investigate, Host
 from modules import UtcToLocal
+import tools.comb_reports
+import tools.mass_investigator
 
 class Main:
     
@@ -19,6 +21,7 @@ class Main:
         parser.add_argument('-f', '--format', type=str, help="Format to export to. Avoids prompt for CLI auto investigate.")
         parser.add_argument('-p', '--passive', action='store_true', help="Passive recon only. Doesn't run nmap or any scans that interact with the target itself.")
         parser.add_argument('-t', '--time', type=str, help="Convert time from UTC to Local Time and quit. (format: 2018-10-16 21:22:23)")
+        parser.add_argument('-m', '--mass', type=str, help='Filename of hostnames or ips to investigate. Must start with "hostnames_" "ips_"')
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
 
@@ -63,9 +66,9 @@ class Main:
                             inReport.append(prop[1])
             f.close
        
-            if len(inReport) == 7:
+            if len(inReport) == 8:
                 self.host = Host(ip=inReport[0], domainName=inReport[1], status=inReport[2], ports=inReport[3], 
-                                whoisInfo=inReport[4], asnNum=inReport[5], asnInfo=inReport[6])
+                                whoisInfo=inReport[4], asnNum=inReport[5], asnInfo=inReport[6], blackListed=inReport[7])
             else:
                 print('Wrong number of arguments in saved report')
                 print(inReport)
@@ -129,6 +132,8 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
         print('Choose an option: ')
         print('1: Open a new investigation')
         print('2: Import a previous investigation')
+        print('3: Mass Investigator of file (file must start with "hostnames_" or "ip_"')
+        print('4: Combine current reports into 1 file for each format')
         print('99: Quit')
 
     def run(self):
@@ -165,6 +170,29 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 except:
                     print('Unable to convert time! Check format matches 2018-10-16 21:22:23')
                     print()
+                sys.exit(0)
+            elif self.args.mass:
+                fileName = self.args.mass
+                try:
+                    while not os.path.isfile(fileName):
+                        print('Enter a filename of hostnames or ips (must start with "hostnames_" or "ips_"')
+                        fileName = input('> ')
+                except KeyboardInterrupt:
+                    pass
+                massInvestigator = tools.mass_investigator.MassInvestigator()
+                hostL = massInvestigator.getHosts(fileName)
+                if 'hostnames_' in fileName:
+                    if self.args.format:
+                        massInvestigator.checkHosts(hostL=hostL, fFormat=self.args.format)
+                    else:
+                        massInvestigator.checkHosts(ipL=hostL)
+                elif 'ips_' in fileName:
+                    if self.args.format:
+                        massInvestigator.checkHosts(ipL=hostL, fFormat=self.args.format)
+                    else:
+                        massInvestigator.checkHosts(ipL=hostL)
+
+                print('Done!')
                 sys.exit(0)
             else:
                 print('Not useful arguments!')
@@ -209,6 +237,34 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                     newInvestigation = Investigate()
                     newInvestigation.openInvestigation()
                     newInvestigation.investigation()
+
+            elif cmd == '3':
+                fileName = ""
+                try:
+                    while not os.path.isfile(fileName):
+                        print('Enter a filename of hostnames or ips (must start with "hostnames_" or "ips_"')
+                        fileName = input('> ')
+                except KeyboardInterrupt:
+                    pass
+                massInvestigator = tools.mass_investigator.MassInvestigator()
+                hostL = massInvestigator.getHosts(fileName)
+                if 'hostnames_' in fileName:
+                    massInvestigator.checkHosts(hostL=hostL)
+                elif 'ips_' in fileName:
+                    massInvestigator.checkHosts(ipL=hostL)
+                print('Done!')
+                sys.exit(0)
+
+            elif cmd == '4':
+                name = ""
+                while name == "":
+                    print('What do you want the group name for these reports to be? ("<name>_hostnames.<format>"')
+                    name = input("> ")
+                combReport = tools.comb_reports.CombineReports()
+                combReport.main(name=name)
+                print('Done!')
+                print()
+                sys.exit(0)
             
             elif cmd == '99':
                 print('[!] Quitting!')

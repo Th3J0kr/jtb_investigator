@@ -3,9 +3,41 @@ from datetime import datetime, timezone
 import nmap
 import whois
 import pyasn
-from spam_lists import SPAMHAUS_DBL
+from spam_lists import SPAMHAUS_DBL, SPAMHAUS_ZEN, SURBL_MULTI
 import os
 import subprocess
+
+
+class BlackListCheck:
+    def __init__(self, url=None, urlList=None):
+        self.url = url
+        self.urlList = urlList
+        self.blackLists = [SPAMHAUS_DBL, SPAMHAUS_ZEN, SURBL_MULTI]
+
+    def singleLookup(self, url):
+        if not url:
+            url = self.url
+        print('Checking blacklists for {}'.format(url))
+        blacklisted = False
+        for blackList in self.blackLists:
+            try:
+                if url in blackList:
+                    print('Found {} in blacklist {}'.format(url, blackList))
+                    blacklisted = True
+            except:
+                print('Error Checking blacklists')
+        return blacklisted
+    
+    def listLookup(self, urlList):
+        if not urlList:
+            urlList = self.urlList
+        blackListed = False
+        for blackList in self.blackLists:
+            for url in urlList:
+                if url in blackList:
+                    blackListed = True
+        return blackListed
+
 
 class UtcToLocal:
     def __init__(self, time=None):
