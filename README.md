@@ -10,6 +10,7 @@
 JTB (Just the basics) Investigator is a simple framework to ease the monotonous looks up many of us do every day. When you get an alert and need to track down an IP or Domain Name or just in general investigation, we often do the same basic look ups (NSLookup, Nmap, whois, etc.) over and over. Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
 
 Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
+More information: [My Blog](https://www.purpleteamsec.com/)
 
 Version: 2.0
 

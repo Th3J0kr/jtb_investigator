@@ -77,7 +77,7 @@ class Main:
     def printVersion(self):
         print()
         print('=-'*21)
-        print('= JTB Investigator Version: 1.0 \t=-')
+        print('= JTB Investigator Version: 2.0 \t=-')
         print('=-'*21)
         print('= Author: Th3J0kr \t\t\t=-')
         print('=-'*29)
@@ -122,7 +122,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                         |__>            || ||      || ||
         
         Author: Th3J0kr
-        Version: 1.0
+        Version: 2.0
         https://www.github.com/th3J0kr/jtb_investigator
 
         """)
