@@ -270,10 +270,22 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                     pass
                 massInvestigator = tools.mass_investigator.MassInvestigator()
                 hostL = massInvestigator.getHosts(fileName)
+                ap = ""
+                while ap == "":
+                    print('Do you want to run in (A)ctive or (P)assive mode?')
+                    ap = input("> ")
+                ap = ap.upper()
                 if 'hostnames_' in fileName:
-                    massInvestigator.checkHosts(hostL=hostL)
+                    if ap == 'A':
+                        massInvestigator.checkHosts(hostL=hostL)
+                    else:
+                        massInvestigator.checkHosts(hostL=hostL, nmap=False)
+
                 elif 'ips_' in fileName:
-                    massInvestigator.checkHosts(ipL=hostL)
+                    if ap == 'A':
+                        massInvestigator.checkHosts(ipL=hostL)
+                    else:
+                        massInvestigator.checkHosts(ipL=hostL, nmap=False)
                 print('Done!')
                 sys.exit(0)
 
@@ -282,6 +294,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 while name == "":
                     print('What do you want the group name for these reports to be? ("<name>_hostnames.<format>"')
                     name = input("> ")
+                
                 combReport = tools.comb_reports.CombineReports()
                 combReport.main(name=name)
                 print('Done!')
