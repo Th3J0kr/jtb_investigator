@@ -67,7 +67,8 @@ class UtcToLocal:
 class AsnLookup:
     
     def lookup(self, ip):
-
+        print('Trying to get ASN info...')
+        print()
         if not os.path.isdir('asn_db'):
             print()
             print('No database folder found!')
@@ -77,12 +78,13 @@ class AsnLookup:
             print('No database file found!')
             print()
         else:
-            asndb = pyasn.pyasn('asn_db/ipasn_db_main.dat')
-            asnNum = asndb.lookup(ip)
-            # print()
-            # print('{} ASN number: {}'.format(ip, asnNum[0]))
-            # print()
-            return asnNum[0]
+            try:
+                asndb = pyasn.pyasn('asn_db/ipasn_db_main.dat')
+                asnNum = asndb.lookup(ip)
+                return asnNum[0]
+            except:
+                print('Unable to get ASN info for {}!'.format(ip))
+                print()
 
     def getDetails(self, asnNum):
         ASN = str(asnNum)

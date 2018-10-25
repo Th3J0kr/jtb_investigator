@@ -8,3 +8,5 @@ txt/*
 .gitignore
 *.bak
 *.bz2
+target_lists/hostnames/*
+target_lists/ips/*
