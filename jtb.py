@@ -148,22 +148,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
             newInvestigation = Investigate()
             self.host = Host()
 
-            if self.args.ip and self.args.hostname:
-                self.host.ip = self.args.ip
-                self.host.domainName = self.args.hostname
-                ready = True
-            elif self.args.ip:
-                self.host.ip = self.args.ip
-                ready = True
-            elif self.args.hostname:
-                self.host.domainName = self.args.hostname
-                ready = True
-            elif self.args.report:
-                self.importInvestigation(self.args.report)
-                newInvestigation.printReport(self.host)
-                newInvestigation = Investigate(self.host)
-                newInvestigation.investigation()
-            elif self.args.time:
+            if self.args.time:
                 timeConv = UtcToLocal()
                 try:
                     print('{} in Local time is: {}'.format(self.args.time, timeConv.convertTime(self.args.time)))
@@ -206,7 +191,6 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                             massInvestigator.checkHosts(ipL=hostL)
 
                 print('Done!')
-                
             
             if self.args.combine:
                 name = self.args.combine
@@ -219,6 +203,21 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 print()
                 sys.exit(0)
             #print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
+            if self.args.ip and self.args.hostname:
+                self.host.ip = self.args.ip
+                self.host.domainName = self.args.hostname
+                ready = True
+            elif self.args.ip:
+                self.host.ip = self.args.ip
+                ready = True
+            elif self.args.hostname:
+                self.host.domainName = self.args.hostname
+                ready = True
+            elif self.args.report:
+                self.importInvestigation(self.args.report)
+                newInvestigation.printReport(self.host)
+                newInvestigation = Investigate(self.host)
+                newInvestigation.investigation()
             if self.args.disable:
                 ready = False
                 newInvestigation = Investigate(self.host)
