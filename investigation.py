@@ -150,7 +150,7 @@ When you get an alert and need to track down an IP or Domain Name or just in gen
 Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
 
 Author: Th3J0kr
-Version: 1.0
+Version: 2.1
 ------
 ##Usage##
 

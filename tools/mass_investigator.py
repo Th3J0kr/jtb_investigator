@@ -15,27 +15,35 @@ class MassInvestigator:
             fileName = self.fileName
         if fileName:
             with open(fileName, 'r') as f:
+                csvReader = csv.reader(f, delimiter=',')
                 if 'hostnames' in fileName:
                     if fileName.endswith('.csv'):
                         print('[*] Reading CSV...')
-                        
+                        next(csvReader)
+                        for line in csvReader:
+                            hostL.append(line[0])
                     else:
                         print('[*] Reading text file...')
                         hosts = f.readlines()
                         for h in hosts:
                             hostL.append(h.strip("\n"))
-                    sys.exit(0)
+                    # sys.exit(0)
                     return hostL
                        
                 elif 'ips' in fileName:
                     if fileName.endswith('.csv'):
                         print('[*] Reading CSV...')
+                        next(csvReader)
+                        for line in csvReader:
+                            ipL.append(line[0])
                     else:
                         print('[*] Reading text file...')
                         hosts = f.readlines()
                         for h in hosts:
-                            ipL.append(h)
-                    sys.exit(0)
+                            ipL.append(h.strip("\n"))
+                    # print('Returning ips:')
+                    # print(ipL)
+                    # sys.exit(0)
                     return ipL
                 else:
                     print('[!] I don\'t understand that file type! Make sure it starts with ips or hostnames!')
