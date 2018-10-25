@@ -104,23 +104,26 @@ class Lookup:
                 ip = socket.gethostbyname(host.domainName)
                 if ip:
                     host.ip = ip
-                    return host
                 else:
                     print('Couldn\'t get IP')
             except:
                 print('Couldn\'t look up that host')
+            return host
 
         elif not host.domainName:
             print('Looking up domain name from ip {}'.format(host.ip))
-            domainName = socket.gethostbyaddr(host.ip)
-            if domainName:
-                host.domainName = domainName[0]
-                return host
-            else:
-                print('Couldn\'t get hostname')
-        
+            try:
+                domainName = socket.gethostbyaddr(host.ip)
+                if domainName:
+                    host.domainName = domainName[0]
+                else:
+                    print('Couldn\'t get hostname')
+            except:
+                print('Couldn\'t get hostname!')
+            return host
         else:
             print('You already have the domain and IP!')
+            return host
     
 class PortScan:
     def __init__(self, ip, sType):
@@ -171,7 +174,7 @@ class Whois:
 
     def getInfo(self):
         print()
-        print('Getting whois info!')
+        print('Getting whois info...')
         print()
 
         if not self.hostName:

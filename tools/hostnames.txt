@@ -1,3 +1,0 @@
-scanme.nmap.org
-google.com
-yahoo.com

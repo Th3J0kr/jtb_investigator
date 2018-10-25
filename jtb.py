@@ -21,7 +21,7 @@ class Main:
         parser.add_argument('-f', '--format', type=str, help="Format to export to. Avoids prompt for CLI auto investigate.")
         parser.add_argument('-p', '--passive', action='store_true', help="Passive recon only. Doesn't run nmap or any scans that interact with the target itself.")
         parser.add_argument('-t', '--time', type=str, help="Convert time from UTC to Local Time and quit. (format: 2018-10-16 21:22:23)")
-        parser.add_argument('-m', '--mass', type=str, help='Filename of hostnames or ips to investigate. Must start with "hostnames_" "ips_"')
+        parser.add_argument('-m', '--mass', type=str, help='Filename of hostnames or ips to investigate, supports csv and txt. Must start with "hostnames_" "ips_"')
         parser.add_argument('-c', '--combine', type=str, help='Name to give file after combine (<filename>_combined.<format>')
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
@@ -77,7 +77,7 @@ class Main:
     def printVersion(self):
         print()
         print('=-'*21)
-        print('= JTB Investigator Version: 2.0 \t=-')
+        print('= JTB Investigator Version: 2.1 \t=-')
         print('=-'*21)
         print('= Author: Th3J0kr \t\t\t=-')
         print('=-'*29)
@@ -122,7 +122,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                         |__>            || ||      || ||
         
         Author: Th3J0kr
-        Version: 2.0
+        Version: 2.1
         https://www.github.com/th3J0kr/jtb_investigator
 
         """)
@@ -133,7 +133,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
         print('Choose an option: ')
         print('1: Open a new investigation')
         print('2: Import a previous investigation')
-        print('3: Mass Investigator of file (file must start with "hostnames_" or "ip_"')
+        print('3: Mass Investigaton of file (csv or txt) (file must start with "hostnames_" or "ip_"')
         print('4: Combine current reports into 1 file for each format')
         print('99: Quit')
 
@@ -148,22 +148,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
             newInvestigation = Investigate()
             self.host = Host()
 
-            if self.args.ip and self.args.hostname:
-                self.host.ip = self.args.ip
-                self.host.domainName = self.args.hostname
-                ready = True
-            elif self.args.ip:
-                self.host.ip = self.args.ip
-                ready = True
-            elif self.args.hostname:
-                self.host.domainName = self.args.hostname
-                ready = True
-            elif self.args.report:
-                self.importInvestigation(self.args.report)
-                newInvestigation.printReport(self.host)
-                newInvestigation = Investigate(self.host)
-                newInvestigation.investigation()
-            elif self.args.time:
+            if self.args.time:
                 timeConv = UtcToLocal()
                 try:
                     print('{} in Local time is: {}'.format(self.args.time, timeConv.convertTime(self.args.time)))
@@ -204,9 +189,10 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                             massInvestigator.checkHosts(ipL=hostL, nmap=False)
                         else:
                             massInvestigator.checkHosts(ipL=hostL)
-
+                else:
+                    print('File name needs to start with hostnames_ or ips_')
+                    sys.exit(0)
                 print('Done!')
-                
             
             if self.args.combine:
                 name = self.args.combine
@@ -219,6 +205,21 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 print()
                 sys.exit(0)
             #print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
+            if self.args.ip and self.args.hostname:
+                self.host.ip = self.args.ip
+                self.host.domainName = self.args.hostname
+                ready = True
+            elif self.args.ip:
+                self.host.ip = self.args.ip
+                ready = True
+            elif self.args.hostname:
+                self.host.domainName = self.args.hostname
+                ready = True
+            elif self.args.report:
+                self.importInvestigation(self.args.report)
+                newInvestigation.printReport(self.host)
+                newInvestigation = Investigate(self.host)
+                newInvestigation.investigation()
             if self.args.disable:
                 ready = False
                 newInvestigation = Investigate(self.host)

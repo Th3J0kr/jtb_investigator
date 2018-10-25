@@ -12,7 +12,7 @@ JTB (Just the basics) Investigator is a simple framework to ease the monotonous 
 Author: [@Th3J0kr](https://twitter.com/Th3J0kr)
 More information: [My Blog](https://www.purpleteamsec.com/)
 
-Version: 2.0
+Version: 2.1
 
 ------
 
@@ -66,7 +66,8 @@ optional arguments:
   -t TIME, --time TIME  Convert time from UTC to Local Time and quit. (format:
                         2018-10-16 21:22:23)
   -m MASS, --mass MASS  Filename of hostnames or ips to investigate. Must
-                        start with "hostnames_" "ips_"
+                        start with "hostnames_" "ips_", supports txt and csv 
+                        import files
   -c COMBINE, --combine COMBINE
                         Name to give file after combine
                         (<filename>_combined.<format>
@@ -83,7 +84,7 @@ Anyway it's easy to automate it all with: `./jtb.py -i <ip to investigate>` or `
 
 This will spit the report(s) into the `reports/` directory in `<hostname or ip>_report.txt`.
 
-Or if you have a file of hostnames or ips (must be saved as "hostnames_*.txt"): `./jtb.py -m <filename>`
+Or if you have a file of hostnames or ips. Supports `.txt` (each on new line) and `.csv` host lists. (Filename must start with "ips_" or "hostnames_"): `./jtb.py -m <filename>`
 
 This will spit the report(s) into the `reports/` directory in `<hostname or ip>_report.csv`. Or you can specify the format with `-f <format>` at the end. 
 

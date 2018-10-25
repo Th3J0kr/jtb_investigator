@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os, sys, csv
 import investigation
 
 class MassInvestigator:
@@ -15,16 +15,35 @@ class MassInvestigator:
             fileName = self.fileName
         if fileName:
             with open(fileName, 'r') as f:
+                csvReader = csv.reader(f, delimiter=',')
                 if 'hostnames' in fileName:
-                    hosts = f.readlines()
-                    for h in hosts:
-                        hostL.append(h.strip("\n"))
+                    if fileName.endswith('.csv'):
+                        print('[*] Reading CSV...')
+                        next(csvReader)
+                        for line in csvReader:
+                            hostL.append(line[0])
+                    else:
+                        print('[*] Reading text file...')
+                        hosts = f.readlines()
+                        for h in hosts:
+                            hostL.append(h.strip("\n"))
+                    # sys.exit(0)
                     return hostL
                        
                 elif 'ips' in fileName:
-                    hosts = f.readlines()
-                    for h in hosts:
-                        ipL.append(h)
+                    if fileName.endswith('.csv'):
+                        print('[*] Reading CSV...')
+                        next(csvReader)
+                        for line in csvReader:
+                            ipL.append(line[0])
+                    else:
+                        print('[*] Reading text file...')
+                        hosts = f.readlines()
+                        for h in hosts:
+                            ipL.append(h.strip("\n"))
+                    # print('Returning ips:')
+                    # print(ipL)
+                    # sys.exit(0)
                     return ipL
                 else:
                     print('[!] I don\'t understand that file type! Make sure it starts with ips or hostnames!')
@@ -34,7 +53,7 @@ class MassInvestigator:
         else:
             print('No file provided!')
             return
-        
+
     def checkHosts(self, ipL=None, hostL=None, fFormat=None, nmap=True):
         if ipL:
             print('Got IPs, running investigations.')
