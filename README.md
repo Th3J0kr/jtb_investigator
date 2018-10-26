@@ -26,6 +26,8 @@ The setup is very simple:
 ### Install python requirements with pip
 `pip3 install -r requirements.txt`
 
+Make sure you have `nmap` and `dnsutils` installed
+
 ### Clone the repo
 `git clone https://github.com/Th3J0kr/jtb_investigator.git`
 
