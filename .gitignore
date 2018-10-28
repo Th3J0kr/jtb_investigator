@@ -10,3 +10,4 @@ txt/*
 *.bz2
 target_lists/hostnames/*
 target_lists/ips/*
+.vscode/

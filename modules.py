@@ -6,6 +6,8 @@ import pyasn
 from spam_lists import SPAMHAUS_DBL, SPAMHAUS_ZEN, SURBL_MULTI
 import os
 import subprocess
+import colorama
+from colorama import Fore, Back, Style
 
 
 class BlackListCheck:
@@ -17,15 +19,17 @@ class BlackListCheck:
     def singleLookup(self, url):
         if not url:
             url = self.url
-        print('Checking blacklists for {}'.format(url))
+        print(Fore.GREEN + 'Checking blacklists for {}'.format(url) + Style.RESET_ALL)
         blacklisted = False
         for blackList in self.blackLists:
             try:
                 if url in blackList:
-                    print('Found {} in blacklist {}'.format(url, blackList))
+                    print(Fore.CYAN + 'Found {} in blacklist {}'.format(url, blackList) + Style.RESET_ALL)
                     blacklisted = True
             except:
                 print('Error Checking blacklists')
+        if not blacklisted:
+            print(Fore.GREEN + '{} Not found in any blacklists...'.format(url) + Style.RESET_ALL)
         return blacklisted
     
     def listLookup(self, urlList):
@@ -45,21 +49,21 @@ class UtcToLocal:
 
     def convertTime(self, time):
         print()
-        print('Converting {} from UTC to Local Time...'.format(time))
+        print(Fore.GREEN + 'Converting {} from UTC to Local Time...'.format(time) + Style.RESET_ALL)
         time = time + ' UTC+0000'
         fmt = "%Y-%m-%d %H:%M:%S %Z%z"
         timeObj = datetime.strptime(time, fmt)
         return timeObj.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
     def convPrompt(self):
-        print('What time did the event occur in UTC? (e.g. 2018-10-16 21:22:23)')
+        print(Fore.MAGENTA + 'What time did the event occur in UTC? (e.g. 2018-10-16 21:22:23)' + Style.RESET_ALL)
         time = input('> ')   
         if time:
             try:
                 convertedTime = self.convertTime(time)
                 return convertedTime
             except:
-                print('I didn\'t understand that time')
+                print(Fore.RED + 'I didn\'t understand that time' + Style.RESET_ALL)
                 return
         else:
             return
@@ -67,10 +71,10 @@ class UtcToLocal:
 class AsnLookup:
     
     def lookup(self, ip):
-        print('Trying to get ASN info...')
+        print(Fore.GREEN + 'Trying to get ASN info...' + Style.RESET_ALL)
         print()
         if not os.path.isdir('asn_db'):
-            print()
+            print(Fore.RED)
             print('No database folder found!')
             print()
         elif not os.path.isfile('asn_db/ipasn_db_main.dat'):
@@ -84,7 +88,7 @@ class AsnLookup:
                 return asnNum[0]
             except:
                 print('Unable to get ASN info for {}!'.format(ip))
-                print()
+                print(Style.RESET_ALL)
 
     def getDetails(self, asnNum):
         ASN = str(asnNum)
@@ -99,7 +103,7 @@ class AsnLookup:
 class Lookup:
     def doLookup(self, host):
         if not host.ip:
-            print('Looking up ip from domain {}'.format(host.domainName))
+            print(Fore.GREEN + 'Looking up ip from domain {}'.format(host.domainName) + Style.RESET_ALL)
             try:
                 ip = socket.gethostbyname(host.domainName)
                 if ip:
@@ -111,18 +115,18 @@ class Lookup:
             return host
 
         elif not host.domainName:
-            print('Looking up domain name from ip {}'.format(host.ip))
+            print(Fore.GREEN + 'Looking up domain name from ip {}'.format(host.ip) + Style.RESET_ALL)
             try:
                 domainName = socket.gethostbyaddr(host.ip)
                 if domainName:
                     host.domainName = domainName[0]
                 else:
-                    print('Couldn\'t get hostname')
+                    print(Fore.RED + 'Couldn\'t get hostname')
             except:
                 print('Couldn\'t get hostname!')
             return host
         else:
-            print('You already have the domain and IP!')
+            print('You already have the domain and IP!' + Style.RESET_ALL)
             return host
     
 class PortScan:
@@ -133,7 +137,7 @@ class PortScan:
         self.state = ""
 
     def runScan(self, ip, sType):
-        print('Running {} scan on {}...'. format(sType, ip))
+        print(Fore.GREEN + 'Running {} scan on {}...'. format(sType, ip) + Style.RESET_ALL)
 
         scanTypes = ['F', 'sS']
         
@@ -147,14 +151,15 @@ class PortScan:
                 self.nm.scan(hosts=ip, arguments=sType)
             else:
                 self.nm.scan(hosts=ip, arguments=sType, ports='21-445,3389,8080,8081')
-            print('Done! Here\'s what I got:')
+            print()
+            print(Fore.CYAN + 'Done! Here\'s what I got:')
             self.parseResults()
-            print('Open ports: {}'.format(self.ports))
+            print('Open ports: {}'.format(self.ports) + Style.RESET_ALL)
             returnL = [self.ports, self.state]
             return returnL
             
         else:
-            print('I don\'t run that kind of scan')
+            print(Fore.RED + 'I don\'t run that kind of scan' + Style.RESET_ALL)
 
     def parseResults(self):
         for host in self.nm.all_hosts():
@@ -173,22 +178,22 @@ class Whois:
         self.results = ""
 
     def getInfo(self):
-        print()
+        print(Fore.GREEN)
         print('Getting whois info...')
-        print()
+        print(Style.RESET_ALL)
 
         if not self.hostName:
             try:
                 self.results = whois.whois(self.ip)
             except:
-                print('Could not get results')
+                print(Fore.RED + 'Could not get results')
         else:
             try:
                 self.results = whois.whois(self.hostName)
                 self.whoisReturn = self.parseResults()
                 return self.whoisReturn
             except:
-                print('Could not get info')
+                print('Could not get info' + Style.RESET_ALL)
         
     
     def parseResults(self):

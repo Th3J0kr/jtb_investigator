@@ -5,12 +5,16 @@ from investigation import Investigate, Host
 from modules import UtcToLocal
 import tools.comb_reports
 import tools.mass_investigator
+import colorama
+from colorama import Fore, Back, Style
+
 
 class Main:
     
     def __init__(self, host=None, args=None):
        self.host = host
        self.args = args
+       colorama.init()
 
     def parse_args(self):
         parser = argparse.ArgumentParser(description='Investigate from the command line')
@@ -28,7 +32,7 @@ class Main:
 
     def importInvestigation(self, filepath=None):
         if not filepath:
-            print('Please provide a filepath of the investigation to import:')
+            print(Fore.MAGENTA + 'Please provide a filepath of the investigation to import:' + Style.RESET_ALL)
             filepath = input('> ')
 
         fileParts = filepath.split('.')
@@ -37,7 +41,7 @@ class Main:
         if not os.path.isfile(filepath):
             print('Couldn\'t find the file!')
         else:
-            print('Importing Investigation {}'.format(filepath))
+            print(Fore.BLUE + 'Importing Investigation {}'.format(filepath) + Style.RESET_ALL)
 
             inReport = []
 
@@ -71,7 +75,7 @@ class Main:
                 self.host = Host(ip=inReport[0], domainName=inReport[1], status=inReport[2], ports=inReport[3], 
                                 whoisInfo=inReport[4], asnNum=inReport[5], asnInfo=inReport[6], blackListed=inReport[7])
             else:
-                print('Wrong number of arguments in saved report')
+                print(Fore.Red + 'Wrong number of arguments in saved report' + Style.RESET_ALL)
                 print(inReport)
 
     def printVersion(self):
@@ -95,7 +99,7 @@ class Main:
 
     def displayIntro(self):
         print('\033c')
-        print("""
+        print(Fore.GREEN + """
         Welcome to the JTB Investigator. To centralize those look ups you have to do 100x a day.
 
 _______________________________________________________________________________________________
@@ -125,7 +129,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
         Version: 2.1
         https://www.github.com/th3J0kr/jtb_investigator
 
-        """)
+        """ + Style.RESET_ALL)
         
 
     def displayMainMenu(self):
@@ -135,7 +139,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
         print('2: Import a previous investigation')
         print('3: Mass Investigaton of file (csv or txt) (file must start with "hostnames_" or "ip_"')
         print('4: Combine current reports into 1 file for each format')
-        print('99: Quit')
+        print(Fore.RED + '99: Quit' + Style.RESET_ALL)
 
     def run(self):
         self.displayIntro()
@@ -154,14 +158,14 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                     print('{} in Local time is: {}'.format(self.args.time, timeConv.convertTime(self.args.time)))
                     print()
                 except:
-                    print('Unable to convert time! Check format matches 2018-10-16 21:22:23')
+                    print(Fore.RED + 'Unable to convert time! Check format matches 2018-10-16 21:22:23' + Stle.RESET_ALL)
                     print()
                 sys.exit(0)
             elif self.args.mass:
                 fileName = self.args.mass
                 try:
                     while not os.path.isfile(fileName):
-                        print('Enter a filename of hostnames or ips (must start with "hostnames_" or "ips_"')
+                        print(Fore.MAGENTA + 'Enter a filename of hostnames or ips (must start with "hostnames_" or "ips_"' + Style.RESET_ALL)
                         fileName = input('> ')
                 except KeyboardInterrupt:
                     pass
@@ -192,16 +196,16 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 else:
                     print('File name needs to start with hostnames_ or ips_')
                     sys.exit(0)
-                print('Done!')
+                print(Fore.GREEN + 'Done!' + Style.RESET_ALL)
             
             if self.args.combine:
                 name = self.args.combine
                 while name == "":
-                    print('What do you want the group name for these reports to be? ("<name>_hostnames.<format>"')
+                    print(Fore.MAGENTA + 'What do you want the group name for these reports to be? ("<name>_hostnames.<format>"' + Style.RESET_ALL)
                     name = input("> ")
                 combReport = tools.comb_reports.CombineReports()
                 combReport.main(name=name)
-                print('Done!')
+                print(Fore.GREEN + 'Done!' + Style.RESET_ALL)
                 print()
                 sys.exit(0)
             #print('Here\'s what I got: IP {}; Hostname{}'.format(self.host.ip, self.host.domainName))
@@ -230,7 +234,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                     self.host = newInvestigation.autoSherlock(self.host, False)
                 else:
                     self.host = newInvestigation.autoSherlock(self.host)
-                newInvestigation.printReport(self.host)
+                #newInvestigation.printReport(self.host)
                 if self.args.format:
                     newInvestigation.exportReport(self.host, self.args.format)
                 else:
@@ -265,7 +269,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 fileName = ""
                 try:
                     while not os.path.isfile(fileName):
-                        print('Enter a filename of hostnames or ips (must start with "hostnames_" or "ips_"')
+                        print(Fore.MAGENTA + 'Enter a filename of hostnames or ips (must start with "hostnames_" or "ips_"' + Style.RESET_ALL)
                         fileName = input('> ')
                 except KeyboardInterrupt:
                     pass
@@ -273,7 +277,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 hostL = massInvestigator.getHosts(fileName)
                 ap = ""
                 while ap == "":
-                    print('Do you want to run in (A)ctive or (P)assive mode?')
+                    print(Fore.MAGENTA + 'Do you want to run in (A)ctive or (P)assive mode?' + Style.RESET_ALL)
                     ap = input("> ")
                 ap = ap.upper()
                 if 'hostnames_' in fileName:
@@ -293,7 +297,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
             elif cmd == '4':
                 name = ""
                 while name == "":
-                    print('What do you want the group name for these reports to be? ("<name>_hostnames.<format>"')
+                    print(Fore.MAGENTA + 'What do you want the group name for these reports to be? ("<name>_hostnames.<format>"' + Style.RESET_ALL)
                     name = input("> ")
                 
                 combReport = tools.comb_reports.CombineReports()
@@ -303,7 +307,7 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 sys.exit(0)
             
             elif cmd == '99':
-                print('[!] Quitting!')
+                print(Fore.RED + '[!] Quitting!' + Style.RESET_ALL)
                 try:
                     sys.exit(0)
                 except SystemExit:
@@ -320,7 +324,7 @@ if __name__ == '__main__':
     try:
         new.run()
     except KeyboardInterrupt:
-        print('\r[!] Quitting!')
+        print(Fore.RED + '\r[!] Quitting!' + Style.RESET_ALL)
         try:
             sys.exit(0)
         except SystemExit:

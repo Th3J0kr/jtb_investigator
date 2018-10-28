@@ -2,3 +2,4 @@ python-nmap
 python-whois
 pyasn
 spam-lists
+colorama
