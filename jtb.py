@@ -15,10 +15,56 @@ class Main:
        self.host = host
        self.args = args
        colorama.init()
+       
+    
+    def helpMsg(self):
+        return """
+
+jtb.py [-h] [-i IP] [-n HOSTNAME] [-r REPORT] [-d] [-f FORMAT] [-p]
+              [-t TIME] [-m MASS] [-c COMBINE] [-v]
+
+Investigate from the command line
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IP, --ip IP        IP to investigate
+  -n HOSTNAME, --hostname HOSTNAME
+                        Hostname to investigate
+  -r REPORT, --report REPORT
+                        Report to import
+  -d, --disable         Disable auto investigate when starting with option
+  -f FORMAT, --format FORMAT
+                        Format to export to. Avoids prompt for CLI auto
+                        investigate.
+  -p, --passive         Passive recon only. Doesn't run nmap or any scans that
+                        interact with the target itself.
+  -t TIME, --time TIME  Convert time from UTC to Local Time and quit. (format:
+                        2018-10-16 21:22:23)
+  -m MASS, --mass MASS  Filename of hostnames or ips to investigate. Must
+                        start with "hostnames_" "ips_", supports txt and csv 
+                        import files
+  -c COMBINE, --combine COMBINE
+                        Name to give file after combine
+                        (<filename>_combined.<format>
+  -v, --version         Print JTB version currently installed
+
+Examples:
+
+Convert time: './jtb.py -t '2018-10-16 21:22:23''
+Start investigation with a hostname: './jtb.py -n scanme.nmap.org -d'
+Start investigation with an IP: './jtb.py -i 8.8.8.8 -d'
+Get all information you can about hostname: './jtb.py -n scanme.nmap.org'
+Get all information you can about hostname using only passive techniques: './jtb.py -n scanme.nmap.org -p'
+Get all information you can about hostname and send to csv report (avoids the prompt after the investigation): './jtb.py -n scanme.nmap.org -f csv'
+Combine all reports currently in reports (exluding already combined files) into 'new_combined.<format>': './jtb.py -c new'
+Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default): './jtb.py -m hostnames_test.txt -p -f json'
+Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default) then combine files into 'test1_combine.json' (warning also combines other reports): './jtb.py -m hostnames_test.txt -p -f json -c test1'
+        """
 
     def parse_args(self):
-        parser = argparse.ArgumentParser(description='Investigate from the command line')
+        parser = argparse.ArgumentParser(add_help=False, description='Investigate from the command line', usage=self.helpMsg())
         parser.add_argument('-i', '--ip', type=str, help = 'IP to investigate')
+        parser.add_argument('-h', '--help', action='store_true', help = 'IP to investigate')
         parser.add_argument('-n', '--hostname', type=str, help ='Hostname to investigate')
         parser.add_argument('-r', '--report', type=str, help='Report to import')
         parser.add_argument('-d', '--disable', action='store_true', help='Disable auto investigate when starting with option')
@@ -29,6 +75,9 @@ class Main:
         parser.add_argument('-c', '--combine', type=str, help='Name to give file after combine (<filename>_combined.<format>')
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
+        if self.args.help:
+            print(self.helpMsg())
+            sys.exit(0)
 
     def importInvestigation(self, filepath=None):
         if not filepath:

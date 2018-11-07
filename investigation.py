@@ -1,7 +1,7 @@
 from modules import Lookup, PortScan, Whois, AsnLookup, UtcToLocal, BlackListCheck
-import os, io, csv, json, colorama
-from colorama import Fore, Back, Style
+import os, io, csv, json
 
+curDir = os.getcwd()
 
 class Investigate:
     
@@ -11,32 +11,32 @@ class Investigate:
             self.host = Host()
 
     def hostInfo(self):
-        print(Fore.BLUE + '----------------------------------------------------')
+        print('----------------------------------------------------')
         print()
         print('Current host info: ')
         print('IP: {}'.format(self.host.ip))
         print('Domain Name: {}'.format(self.host.domainName))
         print()
-        print('----------------------------------------------------' + Style.RESET_ALL)
+        print('----------------------------------------------------')
 
     def printReport(self, host=None):
         if not host:
             print('No host argument provided')
             return
         
-        print(Fore.BLUE)
+        print()
         print('----------------------------------------------------')
         for prop, val in vars(host).items():
             print('{} : {}'.format(prop, val))
-        print('----------------------------------------------------' + Style.RESET_ALL)
+        print('----------------------------------------------------')
 
     def exportReport(self, host, rFormat=None):
         if not host:
             print('No host provided!')
             return
 
-        print(Fore.GREEN + 'Exporting report...' + Style.RESET_ALL)
-        curDir = os.getcwd()
+        print('Exporting report...')
+
         reportDir = curDir + '/reports'
         if not os.path.isdir(reportDir):
             os.mkdir(reportDir)
@@ -51,13 +51,13 @@ class Investigate:
         try:
             while rFormat not in rFormats:
                 if not rFormat:
-                    print(Fore.MAGENTA + "What format do you want the report? (txt (default), csv, or json):" + Style.RESET_ALL)
+                    print("What format do you want the report? (txt (default), csv, or json):")
                     rFormat = input("> ")
 
                     if not rFormat:
                         rFormat = 'txt'
         except KeyboardInterrupt:
-            print('\r\n\nGoing Back!')
+            print('\r\nGoing Back!')
             return
 
         if not host.domainName:
@@ -98,17 +98,17 @@ class Investigate:
 
         f.close()
         print()
-        print(Fore.BLUE + Back.YELLOW + 'Report Exported to {}!'.format(reportPath) + Style.RESET_ALL)
+        print('Report Exported to {}!'.format(reportPath))
 
     def openInvestigation(self):
         valid = False
-        print(Fore.GREEN + 'Opening investigation' + Style.RESET_ALL)
+        print('Opening investigation')
 
         while not valid:
-            print(Fore.MAGENTA)
+            print()
             print('What do you know about the host?')
             print('1: IP address')
-            print('2: Domain Name' + Style.RESET_ALL)
+            print('2: Domain Name')
             
             cmd = input('> ')
 
@@ -122,8 +122,8 @@ class Investigate:
                     valid = True
 
             else:
-                print(Fore.RED + 'Choose a valid option!')
-                print(Style.RESET_ALL)
+                print('Choose a valid option!')
+                print()
            
 
     def displayInvestMenu(self):
@@ -142,17 +142,17 @@ class Investigate:
         print('96: Export Investigation')
         print('97: Change IP')
         print('98: Change Domain Name')
-        print(Fore.RED + '99: Back to main menu (destroys current investigation)' + Style.RESET_ALL)
+        print('99: Back to main menu (destroys current investigation)')
 
     def showHelp(self):
-        print(Fore.CYAN + """
+        print("""
 ------
 JTB (Just the basics) Investigator is a simple framework to ease the monotonous looks up many of us do every day. 
 When you get an alert and need to track down an IP or Domain Name or just in general investigation, we often do the same basic look ups (NSLookup, Nmap, whois, etc.) over and over. 
 Trying to manage the different terminals and out puts became annoying and cumbersome to me so I wanted to make it easier.
 
 Author: Th3J0kr
-Version: 2.1
+Version: 1.0
 ------
 ##Usage##
 
@@ -171,22 +171,22 @@ Version: 2.1
 `98`: Change Domain Name of target
 `99`: Go back to main menu. Destroys current investigation
 
-## Examples:
+##Examples##
+
 Convert time: `./jtb.py -t '2018-10-16 21:22:23'`
 Start investigation with a hostname: `./jtb.py -n scanme.nmap.org -d`
 Start investigation with an IP: `./jtb.py -i 8.8.8.8 -d`
 Get all information you can about hostname: `./jtb.py -n scanme.nmap.org`
 Get all information you can about hostname using only passive techniques: `./jtb.py -n scanme.nmap.org -p`
 Get all information you can about hostname and send to csv report (avoids the prompt after the investigation): `./jtb.py -n scanme.nmap.org -f csv`
-Combine all reports currently in reports (exluding already combined files) into `new_combined.<format>`: `./jtb.py -c new`
-Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default): `./jtb.py -m hostnames_test.txt -p -f json`
-Run batch investigation of hostnames in hostnames_test.txt in passive mode (without nmap) and export report in json (csv is default) then combine files into `test1_combine.json` (warning also combines other reports): `./jtb.py -m hostnames_test.txt -p -f json -c test1`
-""" + Style.RESET_ALL)
+Run batch investigation of hostnames in hostnames_sus.txt: `./tools/mass_investigator.py -r hostnames_sus.txt`
+Run batch investigation of hostnames in hostnames_sus.txt and export report in json (csv is default): `./tools/mass_investigator.py -r hostnames_sus.txt -f json`
+        """)
 
     def autoSherlock(self, host=None, nmap=True):
-        print(Fore.GREEN)
+        print()
         print('Let me see what I can get for you...')
-        print(Style.RESET_ALL)
+        print()
 
         if not host:
             return
@@ -205,8 +205,8 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
                 host.ports = resultL[0]
                 host.status = resultL[1]
         else:
-            print(Fore.YELLOW)
-            print('Run in passive mode. Skipping nmap scan!' + Style.RESET_ALL)
+            print()
+            print('Run in passive mode. Skipping nmap scan!')
 
         if not host.whoisInfo:
                 if not host.domainName:
@@ -221,11 +221,10 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
                 host.asnInfo = asnLookup.getDetails(host.asnNum)
 
         if host.domainName:
+            print('Checking blacklists...')
             blackListCheck = BlackListCheck()
             host.blackListed = blackListCheck.singleLookup(host.domainName)
-        print()
-        print('All done, here\'s what I got: ')
-        self.printReport(host)
+
         return host
 
     def investigation(self):
@@ -253,7 +252,7 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
                         print('Need an IP or hostname first!')
 
             elif cmd == '4':
-                print(Fore.MAGENTA + 'What type of scan do you want to do? (e.g. F (default), sS)' + Style.RESET_ALL)
+                print('What type of scan do you want to do? (e.g. F (default), sS)')
                 sType = input('> ')
                 if self.host.ip:
                     scan = PortScan(self.host.ip, sType)
@@ -261,10 +260,9 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
                     self.host.ports = resultL[0]
                     self.host.status = resultL[1]
                 else:
-                    print(Fore.RED + 'Need an IP first!')
+                    print('Need an IP first!')
 
-            elif cmd == '5':               
-                
+            elif cmd == '5':
                 if not self.host.domainName:
                     self.whoisLookup = Whois(ip=self.host.ip)
                 else:
@@ -295,34 +293,34 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
                     self.host.blackListed = blackListCheck.singleLookup(self.host.domainName)
                 else:
                     print()
-                    print('You need a hostname/domain name first!' + Style.RESET_ALL)
+                    print('You need a hostname/domain name first!')
                 
             
             elif cmd == '8':
                 choices = ['A', 'P']
                 choice = ""
                 while choice.upper() not in choices:
-                    print(Fore.MAGENTA + 'Do you want to run AutoSherlock in (A)ctive or (P)assive mode? (Passive skips modules that directly touch targed i.e. nmap)' + Style.RESET_ALL)
+                    print('Do you want to run AutoSherlock in (A)ctive or (P)assive mode? (Passive skips modules that directly touch targed i.e. nmap)')
                     choice = input('> ')
                 
                 if self.host:
                     if not self.host.ip and not self.host.domainName:
-                        print(Fore.RED + 'I don\'t have enough info for that yet!' + Style.RESET_ALL)
+                        print('I don\'t have enough info for that yet!')
                     else:
                         if choice == 'A':
                             self.autoSherlock(self.host)
                         else:
                             self.autoSherlock(self.host, False)
                 else:
-                    print(Fore.RED + 'You need to add an IP or hostname first!' + Style.RESET_ALL)
+                    print('You need to add an IP or hostname first!')
 
             elif cmd == '95':
                 tzConverter = UtcToLocal()
                 localTime = tzConverter.convPrompt()
                 if localTime:
-                    print(Fore.GREEN + 'The event occured at {}'.format(localTime) + Style.RESET_ALL)
+                    print('The event occured at {}'.format(localTime))
                 else:
-                    print(Fore.RED + 'Unable to convert time!')
+                    print('Unable to convert time!')
 
             elif cmd == '96':
                 if self.host.ip or self.host.domainName:
@@ -341,7 +339,7 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
                 break
 
             else:
-                print('Please enter a valid option!' + Style.RESET_ALL)
+                print('Please enter a valid option!')
             
     
 
@@ -359,14 +357,14 @@ class Host:
     def changeIP(self):
         
         while not self.ip:
-            print(Fore.MAGENTA + 'Please enter IP address of host: ' + Style.RESET_ALL)
+            print('Please enter IP address of host: ')
             ip = input('(e.g. 10.80.1.1) > ')
             self.ip = ip
-        print(Fore.GREEN + 'Assigned host ip of {}'.format(self.ip) + Style.RESET_ALL)
+        print('Assigned host ip of {}'.format(self.ip))
 
     def changeDomain(self):
         while not self.domainName:
-            print(Fore.MAGENTA + 'Please enter Domain Name of host: ' + Style.RESET_ALL)
+            print('Please enter Domain Name of host: ')
             domainName = input('(e.g. google.com) > ')    
             self.domainName = domainName
-        print(Fore.GREEN + 'Assigned host domain name of {}'.format(self.domainName) + Style.RESET_ALL)
+        print('Assigned host domain name of {}'.format(self.domainName))
