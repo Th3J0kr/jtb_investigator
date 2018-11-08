@@ -5,6 +5,7 @@ from investigation import Investigate, Host
 from modules import UtcToLocal
 import tools.comb_reports
 import tools.mass_investigator
+import tools.clear_logs
 import colorama
 from colorama import Fore, Back, Style
 
@@ -46,6 +47,7 @@ optional arguments:
   -c COMBINE, --combine COMBINE
                         Name to give file after combine
                         (<filename>_combined.<format>
+  -z ZERO, --zero       Clear out all reports (BACKUP BEFORE RUNNING!)
   -v, --version         Print JTB version currently installed
 
 Examples:
@@ -64,7 +66,7 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
     def parse_args(self):
         parser = argparse.ArgumentParser(add_help=False, description='Investigate from the command line', usage=self.helpMsg())
         parser.add_argument('-i', '--ip', type=str, help = 'IP to investigate')
-        parser.add_argument('-h', '--help', action='store_true', help = 'IP to investigate')
+        parser.add_argument('-h', '--help', action='store_true', help = 'Show help')
         parser.add_argument('-n', '--hostname', type=str, help ='Hostname to investigate')
         parser.add_argument('-r', '--report', type=str, help='Report to import')
         parser.add_argument('-d', '--disable', action='store_true', help='Disable auto investigate when starting with option')
@@ -73,6 +75,7 @@ Run batch investigation of hostnames in hostnames_test.txt in passive mode (with
         parser.add_argument('-t', '--time', type=str, help="Convert time from UTC to Local Time and quit. (format: 2018-10-16 21:22:23)")
         parser.add_argument('-m', '--mass', type=str, help='Filename of hostnames or ips to investigate, supports csv and txt. Must start with "hostnames_" "ips_"')
         parser.add_argument('-c', '--combine', type=str, help='Name to give file after combine (<filename>_combined.<format>')
+        parser.add_argument('-z', '--zero', action='store_true', help='Clear out all the reports (WARNING BACK UP BEFORE RUNNING!)')
         parser.add_argument('-v', '--version', action='store_true', help='Print JTB version currently installed')
         self.args = parser.parse_args()
         if self.args.help:
@@ -209,6 +212,10 @@ _(___/____/______/____/_______/_ __/___/__|/__(___ _(__)_(_ __/___(___/_(___(_(_
                 except:
                     print(Fore.RED + 'Unable to convert time! Check format matches 2018-10-16 21:22:23' + Stle.RESET_ALL)
                     print()
+                sys.exit(0)
+            elif self.args.zero:
+                clearLogs = tools.clear_logs.ClearLogs()
+                clearLogs.main()
                 sys.exit(0)
             elif self.args.mass:
                 fileName = self.args.mass
