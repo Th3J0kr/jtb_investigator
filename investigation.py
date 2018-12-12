@@ -202,8 +202,11 @@ Run batch investigation of hostnames in hostnames_sus.txt and export report in j
                 sType = 'F'
                 scan = PortScan(host.ip, sType)
                 resultL = scan.runScan(host.ip, sType)
-                host.ports = resultL[0]
-                host.status = resultL[1]
+                try:
+                    host.ports = resultL[0]
+                    host.status = resultL[1]
+                except:
+                    print('No ports returned')
         else:
             print()
             print('Run in passive mode. Skipping nmap scan!')

@@ -144,22 +144,25 @@ class PortScan:
         if not sType:
             sType = 'F'
         
-        if sType in scanTypes:
-            sType = '-' + sType
-            self.nm = nmap.PortScanner()
-            if sType == '-F':
-                self.nm.scan(hosts=ip, arguments=sType)
+        if ip:
+            if sType in scanTypes:
+                sType = '-' + sType
+                self.nm = nmap.PortScanner()
+                if sType == '-F':
+                    self.nm.scan(hosts=ip, arguments=sType)
+                else:
+                    self.nm.scan(hosts=ip, arguments=sType, ports='21-445,3389,8080,8081')
+                print()
+                print(Fore.CYAN + 'Done! Here\'s what I got:')
+                self.parseResults()
+                print('Open ports: {}'.format(self.ports) + Style.RESET_ALL)
+                returnL = [self.ports, self.state]
+                return returnL
+                
             else:
-                self.nm.scan(hosts=ip, arguments=sType, ports='21-445,3389,8080,8081')
-            print()
-            print(Fore.CYAN + 'Done! Here\'s what I got:')
-            self.parseResults()
-            print('Open ports: {}'.format(self.ports) + Style.RESET_ALL)
-            returnL = [self.ports, self.state]
-            return returnL
-            
+                print(Fore.RED + 'I don\'t run that kind of scan' + Style.RESET_ALL)
         else:
-            print(Fore.RED + 'I don\'t run that kind of scan' + Style.RESET_ALL)
+            print('No IP found')
 
     def parseResults(self):
         for host in self.nm.all_hosts():

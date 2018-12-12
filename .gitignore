@@ -11,4 +11,3 @@ txt/*
 target_lists/hostnames/*
 target_lists/ips/*
 .vscode/
-.mypy_cache/
