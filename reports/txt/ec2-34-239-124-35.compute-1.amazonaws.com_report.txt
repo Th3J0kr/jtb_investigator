@@ -1,9 +1,0 @@
-subAltNames : None
-domainName : ec2-34-239-124-35.compute-1.amazonaws.com
-asnNum : 14618
-whoisInfo : {'name': 'Legal Department', 'city': 'Seattle', 'domain_name': ['AMAZONAWS.COM', 'amazonaws.com'], 'address': 'PO BOX 81226', 'state': 'WA', 'organization': 'Amazon.com, Inc.'}
-blackListed : False
-status : None
-asnInfo : {'Registry': 'arin', 'Date Registered': '2005-11-04', 'ISP': 'AMAZON-AES - Amazon.com, Inc., US', 'Country': 'US'}
-ip : 34.239.124.35
-ports : None

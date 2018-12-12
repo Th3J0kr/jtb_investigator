@@ -1,9 +1,0 @@
-ports : None
-asnInfo : {'ISP': 'FACEBOOK - Facebook, Inc., US', 'Country': 'US', 'Registry': 'arin', 'Date Registered': '2004-08-24'}
-ip : 31.13.65.36
-subAltNames : None
-whoisInfo : {'state': 'CA', 'organization': 'Facebook, Inc.', 'domain_name': 'FACEBOOK.COM', 'address': '1601 Willow Rd', 'name': 'Domain Admin', 'city': 'Menlo Park'}
-asnNum : 32934
-domainName : facebook.com
-status : None
-blackListed : False

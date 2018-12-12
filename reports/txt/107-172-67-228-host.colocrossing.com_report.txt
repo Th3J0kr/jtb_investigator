@@ -1,9 +1,0 @@
-subAltNames : None
-domainName : 107-172-67-228-host.colocrossing.com
-asnNum : 36352
-whoisInfo : {'name': None, 'city': None, 'domain_name': 'COLOCROSSING.COM', 'address': None, 'state': 'New York', 'organization': 'Colo Crossing'}
-blackListed : False
-status : None
-asnInfo : {'Registry': 'arin', 'Date Registered': '2005-12-12', 'ISP': 'AS-COLOCROSSING - ColoCrossing, US', 'Country': 'US'}
-ip : 107.172.67.228
-ports : None

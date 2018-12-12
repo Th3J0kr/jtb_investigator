@@ -1,9 +1,0 @@
-ports : None
-asnInfo : {'ISP': 'GOOGLE - Google LLC, US', 'Country': 'US', 'Registry': 'arin', 'Date Registered': '2000-03-30'}
-ip : 172.217.6.14
-subAltNames : None
-whoisInfo : {'state': 'CA', 'organization': 'Google LLC', 'domain_name': ['GOOGLE.COM', 'google.com'], 'address': None, 'name': None, 'city': None}
-asnNum : 15169
-domainName : google.com
-status : None
-blackListed : False
